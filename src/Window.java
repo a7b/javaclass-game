@@ -26,7 +26,7 @@ public class Window extends JPanel {
 
 	public Window() {
 		this.ctx = new Context.Factory().create();
-		timer = new Timer(1000 / TICK, ctx.ticker);
+		timer = new Timer(1000 / TICK, ctx.getTicker());
 	}
 
 	public void start() {

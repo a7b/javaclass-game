@@ -11,30 +11,30 @@ public class Context {
     }
 
     public Window getWindow() {
-        return w;
+        return window;
     }
 
-    public void setWindow(Window w) {
-        this.w = w;
+    public void setWindow(Window window) {
+        this.window = window;
     }
 
-    public Ticker getWindow() {
-        return w;
+    public Ticker getTicker() {
+        return ticker;
     }
 
-    public void setTicker(Ticker t) {
-        this.t = t;
+    public void setTicker(Ticker ticker) {
+        this.ticker = ticker;
     }
 
     public Game getGame() {
-        return g;
+        return game;
     }
 
-    public void setGame(Game g) {
-        this.g = g;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
-	private static class Factory {
+	public static class Factory {
 	    private Window w;
 	    private Ticker t;
 	    private Game g;
@@ -49,8 +49,8 @@ public class Context {
 	        return this;
 	    }
 
-	    public Ticker getWindow() {
-	        return w;
+	    public Ticker getTicker() {
+	        return t;
 	    }
 
 	    public Factory setTicker(Ticker t) {
@@ -77,6 +77,7 @@ public class Context {
 	        if (g == null) {
 	            g = new Game();
 	        }
+	        return new Context(w, t, g);
 	    }
 
 	}
