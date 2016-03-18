@@ -9,8 +9,9 @@ public class Window extends JPanel {
 
 	public static final int TICK = 250;
 
-	Ticker ticker;
-	Timer timer;
+	public Context ctx;
+
+	protected Timer timer;
 
 	public static void main(String[] args) {
 		Window w = new Window();
@@ -24,8 +25,8 @@ public class Window extends JPanel {
 	}
 
 	public Window() {
-		ticker = new Ticker();
-		timer = new Timer(1000 / TICK, ticker);
+		this.ctx = new Context.Factory().create();
+		timer = new Timer(1000 / TICK, ctx.ticker);
 	}
 
 	public void start() {
