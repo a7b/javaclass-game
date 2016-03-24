@@ -7,30 +7,34 @@ public class Window extends JPanel {
 
 	private static final long serialVersionUID = -8078394741457691220L;
 
-	public static final int TICK = 250;
-
-	public Context ctx;
+	private Context ctx;
 
 	protected Timer timer;
 
 	public static void main(String[] args) {
-		Window w = new Window();
+		new Window();
+	}
+
+	public Window() {
 		JFrame f = new JFrame("Word game");
 		f.setSize(1280, 720);
 		f.setLocationRelativeTo(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.add(new Window());
 		f.setVisible(true);
-		w.start();
+
+		this.ctx = new Context.Factory().setWindow(this).create();
+		this.timer = new Timer(1000 / Context.TICK, ctx.getTicker());
+
+		this.timer.start();
 	}
 
-	public Window() {
-		this.ctx = new Context.Factory().create();
-		timer = new Timer(1000 / TICK, ctx.getTicker());
+	public Context getContext() {
+		return ctx;
 	}
 
-	public void start() {
-		timer.start();
+	public void setContext(Context ctx) {
+		this.ctx = ctx;
 	}
 
 }

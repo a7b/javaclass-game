@@ -1,5 +1,8 @@
 
 public class Context {
+
+	public static final int TICK = 250;
+
 	private Window window;
 	private Ticker ticker;
 	private Game game;
@@ -8,6 +11,9 @@ public class Context {
         this.window = window;
         this.ticker = ticker;
         this.game = game;
+		this.window.setContext(this);
+		this.ticker.setContext(this);
+		this.game.setContext(this);
     }
 
     public Window getWindow() {
@@ -38,6 +44,12 @@ public class Context {
 	    private Window w;
 	    private Ticker t;
 	    private Game g;
+
+		public Factory() {
+			this.w = null;
+			this.t = null;
+			this.g = null;
+		}
 
 	    public Window getWindow() {
 	        return w;
