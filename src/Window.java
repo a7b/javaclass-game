@@ -20,7 +20,7 @@ public class Window extends JPanel {
 		f.setSize(1280, 720);
 		f.setLocationRelativeTo(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.add(new Window());
+		f.add(this);
 		f.setVisible(true);
 
 		this.ctx = new Context.Factory().setWindow(this).create();
