@@ -1,11 +1,11 @@
+import java.awt.CardLayout;
+
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 
-public class Window extends JPanel {
-
-	private static final long serialVersionUID = -8078394741457691220L;
+public class Window {
 
 	private Context ctx;
 
@@ -20,13 +20,25 @@ public class Window extends JPanel {
 		f.setSize(1280, 720);
 		f.setLocationRelativeTo(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.add(this);
-		f.setVisible(true);
+
+		CardLayout l = new CardLayout();
+
+		f.getContentPane().setLayout(l);
 
 		this.ctx = new Context.Factory().setWindow(this).create();
 		this.timer = new Timer(1000 / Context.TICK, ctx.getTicker());
 
-		this.timer.start();
+		f.getContentPane().add(ctx.getGame());
+		l.addLayoutComponent(ctx.getGame(), "game");
+		l.show(f.getContentPane(), "game");
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				timer.start();
+				f.setVisible(true);
+			}
+		});
 	}
 
 	public Context getContext() {
