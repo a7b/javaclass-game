@@ -87,7 +87,7 @@ public class Context {
 	            t = new Ticker();
 	        }
 	        if (g == null) {
-	            g = new Game();
+				g = new Game();
 	        }
 	        return new Context(w, t, g);
 	    }
