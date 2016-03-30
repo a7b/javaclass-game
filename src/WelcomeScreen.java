@@ -41,6 +41,7 @@ public class WelcomeScreen extends JPanel implements ActionListener{
 		test.setVisible(true);
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == play){
 			
