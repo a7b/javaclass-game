@@ -1,11 +1,12 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 public class Game extends JPanel {
 
@@ -13,14 +14,16 @@ public class Game extends JPanel {
 
 	private Context ctx;
 
-	private WorldObject cannonBodyPath;
-	private WorldObject cannonBarrelPath;
+	private AffineTransform cannonTransform;
+	private WorldObject cannonBody;
+	private WorldObject cannonBarrel;
 
 	Game() {
-		cannonBodyPath = new WorldObject(new GeneralPath(new Ellipse2D.Double(
-				0, 0, 100, 100)));
-		cannonBarrelPath = new WorldObject(new GeneralPath(
-				new Rectangle2D.Double(50, 40, 100, 20)));
+		cannonTransform = new AffineTransform();
+		cannonBody = new WorldObject(new GeneralPath(new Ellipse2D.Double(0, 0,
+				100, 100)), cannonTransform);
+		cannonBarrel = new WorldObject(new GeneralPath(new Rectangle2D.Double(
+				30, 40, 100, 20)), cannonTransform);
 	}
 
 	@Override
@@ -29,19 +32,15 @@ public class Game extends JPanel {
 		Graphics2D g = (Graphics2D) graphics;
 		g.drawString("Time: " + System.currentTimeMillis(), 100, 100);
 
-		// g.setColor(Color.BLACK);
-
-		g.fill(cannonBodyPath.path());
-		g.fill(cannonBarrelPath.path());
+		g.setColor(new Color(0x9E, 0x9E, 0x9E));
+		g.fill(cannonBarrel.render());
+		g.setColor(new Color(0x60, 0x7D, 0x8B));
+		g.fill(cannonBody.render());
 	}
 
 	public void tick() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				repaint();
-			}
-		});
+		cannonTransform.translate(50.0 / Context.TICK, 0);
+		repaint();
 	}
 
 	public Context getContext() {

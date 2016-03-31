@@ -1,3 +1,4 @@
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 
@@ -16,7 +17,12 @@ public class WorldObject {
 	}
 
 	public WorldObject(GeneralPath p, AffineTransform at) {
+		this.p = p;
 		this.at = at;
+	}
+
+	public Shape render() {
+		return p.createTransformedShape(at);
 	}
 
 	public GeneralPath path() {
@@ -32,7 +38,6 @@ public class WorldObject {
 	}
 
 	public void transform(AffineTransform at) {
-		p.transform(at);
 		this.at = at;
 	}
 }
