@@ -1,6 +1,9 @@
 import java.awt.CardLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -8,8 +11,8 @@ import javax.swing.Timer;
 public class Window {
 
 	private Context ctx;
-
 	protected Timer timer;
+	private JMenuBar jMenu;
 
 	public static void main(String[] args) {
 		new Window();
@@ -39,6 +42,15 @@ public class Window {
 				f.setVisible(true);
 			}
 		});
+		
+		jMenu = new JMenuBar();
+		JMenu game = new JMenu("Game");
+		JMenuItem newGame = new JMenuItem("New Game");
+		JMenuItem exit = new JMenuItem("Exit");
+		
+		game.add(newGame);
+		game.add(exit);
+		jMenu.add(game);
 	}
 
 	public Context getContext() {
