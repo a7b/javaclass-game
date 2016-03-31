@@ -32,7 +32,6 @@ public class Instructions extends JPanel implements ActionListener{
 		instructionsPanel.add(back);
 		
 		instructionsL1 = new JLabel("INSTRUCTIONS");
-		
 		instructionsL2 = new JLabel("- Type a word that you see floating down the screen into the text box to load the cannon");
 		instructionsL3 = new JLabel("- Pressing \"Enter\" will shoot a laser beam");
 		instructionsL4 = new JLabel("- Use the mouse to aim the cannon");
