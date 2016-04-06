@@ -12,6 +12,14 @@ public class WorldObject {
 		this(new GeneralPath());
 	}
 
+	public WorldObject(Shape s) {
+		this(new GeneralPath(s));
+	}
+
+	public WorldObject(Shape s, AffineTransform at) {
+		this(new GeneralPath(s), at);
+	}
+
 	public WorldObject(GeneralPath p) {
 		this(p, new AffineTransform());
 	}

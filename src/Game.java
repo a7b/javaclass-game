@@ -3,7 +3,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
@@ -20,10 +19,12 @@ public class Game extends JPanel {
 
 	Game() {
 		cannonTransform = new AffineTransform();
-		cannonBody = new WorldObject(new GeneralPath(new Ellipse2D.Double(0, 0,
-				100, 100)), cannonTransform);
-		cannonBarrel = new WorldObject(new GeneralPath(new Rectangle2D.Double(
-				30, 40, 100, 20)), cannonTransform);
+		cannonBody = new WorldObject(new Ellipse2D.Double(0, 0, 100, 100),
+				cannonTransform);
+		cannonBarrel = new WorldObject(new Rectangle2D.Double(30, 40, 100, 20),
+				cannonTransform);
+
+		cannonTransform.translate(100, 100);
 	}
 
 	@Override
@@ -39,7 +40,8 @@ public class Game extends JPanel {
 	}
 
 	public void tick() {
-		cannonTransform.translate(50.0 / Context.TICK, 0);
+		// cannonTransform.translate(10.0 / Context.TICK, 0);
+		// cannonTransform.rotate(Math.PI / Context.TICK, 50, 50);
 		repaint();
 	}
 
