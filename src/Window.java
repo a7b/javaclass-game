@@ -1,10 +1,11 @@
 import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 
@@ -12,7 +13,7 @@ public class Window {
 
 	private Context ctx;
 	protected Timer timer;
-	private JMenuBar jMenu;
+	private JMenuBar menu;
 
 	public static void main(String[] args) {
 		new Window();
@@ -31,26 +32,30 @@ public class Window {
 		this.ctx = new Context.Factory().setWindow(this).create();
 		this.timer = new Timer(1000 / Context.TICK, ctx.getTicker());
 
+		WelcomeScreen ws = new WelcomeScreen();
+
+		f.getContentPane().add(ws);
 		f.getContentPane().add(ctx.getGame());
 		l.addLayoutComponent(ctx.getGame(), "game");
-		l.show(f.getContentPane(), "game");
+		l.addLayoutComponent(ws, "welcome-screen");
+		l.show(f.getContentPane(), "welcome-screen");
+		// l.show(f.getContentPane(), "game");
 
-		SwingUtilities.invokeLater(new Runnable() {
+		menu = new JMenuBar();
+		JMenu menuGame = new JMenu("Game");
+		JMenuItem menuExit = new JMenuItem("Exit");
+		menuExit.addActionListener(new ActionListener() {
 			@Override
-			public void run() {
-				timer.start();
-				f.setVisible(true);
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 			}
 		});
-		
-		jMenu = new JMenuBar();
-		JMenu game = new JMenu("Game");
-		JMenuItem newGame = new JMenuItem("New Game");
-		JMenuItem exit = new JMenuItem("Exit");
-		
-		game.add(newGame);
-		game.add(exit);
-		jMenu.add(game);
+
+		menuGame.add(menuExit);
+		menu.add(menuGame);
+
+		timer.start();
+		f.setVisible(true);
 	}
 
 	public Context getContext() {

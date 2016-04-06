@@ -42,7 +42,9 @@ public class Game extends JPanel {
 	public void tick() {
 		// cannonTransform.translate(10.0 / Context.TICK, 0);
 		// cannonTransform.rotate(Math.PI / Context.TICK, 50, 50);
-		repaint();
+		if (this.isVisible()) {
+			repaint();
+		}
 	}
 
 	public Context getContext() {
