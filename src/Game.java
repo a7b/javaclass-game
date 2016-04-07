@@ -32,8 +32,6 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 				cannonTransform);
 
 		cannonTransform.translate(100, 100);
-		
-		tm = new Timer(5000, this)
 	}
 
 	@Override
