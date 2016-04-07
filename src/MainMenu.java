@@ -5,15 +5,17 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
-public class WelcomeScreen extends JPanel implements ActionListener {
+public class MainMenu extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -5432368345116470291L;
+
+	private Context ctx;
 
 	private JButton play;
 	private JButton howToPlay;
 	private SpringLayout layout;
 	
-	public WelcomeScreen(){
+	public MainMenu(){
 		layout = new SpringLayout();
 		setLayout(layout);
 		
@@ -38,7 +40,17 @@ public class WelcomeScreen extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == play){
 			
+		} else if (e.getSource() == howToPlay) {
+			// TODO show instructions
 		}
+	}
+
+	public Context getContext() {
+		return ctx;
+	}
+
+	public void setContext(Context ctx) {
+		this.ctx = ctx;
 	}
 	
 }

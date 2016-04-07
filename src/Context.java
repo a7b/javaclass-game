@@ -6,14 +6,17 @@ public class Context {
 	private Window window;
 	private Ticker ticker;
 	private Game game;
+	private MainMenu mainMenu;
 
-    protected Context(Window window, Ticker ticker, Game game) {
+	protected Context(Window window, Ticker ticker, Game game, MainMenu mainMenu) {
         this.window = window;
         this.ticker = ticker;
         this.game = game;
+		this.setMainMenu(mainMenu);
 		this.window.setContext(this);
 		this.ticker.setContext(this);
 		this.game.setContext(this);
+		this.mainMenu.setContext(this);
     }
 
     public Window getWindow() {
@@ -40,15 +43,25 @@ public class Context {
         this.game = game;
     }
 
+	public MainMenu getMainMenu() {
+		return mainMenu;
+	}
+
+	public void setMainMenu(MainMenu mainMenu) {
+		this.mainMenu = mainMenu;
+	}
+
 	public static class Factory {
 	    private Window w;
 	    private Ticker t;
 	    private Game g;
+		private MainMenu mm;
 
 		public Factory() {
 			this.w = null;
 			this.t = null;
 			this.g = null;
+			this.mm = null;
 		}
 
 	    public Window getWindow() {
@@ -79,6 +92,15 @@ public class Context {
 	        return this;
 	    }
 
+		public MainMenu getMainMenu() {
+			return mm;
+		}
+
+		public Factory setMainMenu(MainMenu mm) {
+			this.mm = mm;
+			return this;
+		}
+
 	    public Context create() {
 	        if (w == null) {
 	            w = new Window();
@@ -89,7 +111,10 @@ public class Context {
 	        if (g == null) {
 				g = new Game();
 	        }
-	        return new Context(w, t, g);
+			if (mm == null) {
+				mm = new MainMenu();
+			}
+			return new Context(w, t, g, mm);
 	    }
 
 	}

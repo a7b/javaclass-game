@@ -32,13 +32,13 @@ public class Window {
 		this.ctx = new Context.Factory().setWindow(this).create();
 		this.timer = new Timer(1000 / Context.TICK, ctx.getTicker());
 
-		WelcomeScreen ws = new WelcomeScreen();
+		MainMenu mm = new MainMenu();
 
-		f.getContentPane().add(ws);
+		f.getContentPane().add(mm);
 		f.getContentPane().add(ctx.getGame());
 		l.addLayoutComponent(ctx.getGame(), "game");
-		l.addLayoutComponent(ws, "welcome-screen");
-		l.show(f.getContentPane(), "welcome-screen");
+		l.addLayoutComponent(mm, "main-menu");
+		l.show(f.getContentPane(), "main-menu");
 		// l.show(f.getContentPane(), "game");
 
 		menu = new JMenuBar();
