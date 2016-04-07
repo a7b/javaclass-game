@@ -1,9 +1,9 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -14,6 +14,9 @@ public class Game extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 469989049178129651L;
 
+	private static final double SPEED = 50;
+	private static final double REDUCED_SPEED = SPEED / Context.TICK;
+
 	private Context ctx;
 
 	private AffineTransform cannonTransform;
@@ -21,6 +24,7 @@ public class Game extends JPanel implements KeyListener {
 	private WorldObject cannonBarrel;
 
 	Game() {
+		addKeyListener(this);
 		cannonTransform = new AffineTransform();
 		cannonBody = new WorldObject(new Ellipse2D.Double(0, 0, 100, 100),
 				cannonTransform);
@@ -62,14 +66,30 @@ public class Game extends JPanel implements KeyListener {
 		this.ctx = ctx;
 	}
 	
+	@Override
 	public void keyTyped(KeyEvent e) {
 		
 	}
 
+	@Override
 	public void keyPressed(KeyEvent e) {
-		
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_W:
+			cannonTransform.translate(SPEED, 0);
+			break;
+		case KeyEvent.VK_A:
+
+			break;
+		case KeyEvent.VK_S:
+
+			break;
+		case KeyEvent.VK_D:
+
+			break;
+		}
 	}
 
+	@Override
 	public void keyReleased(KeyEvent e) {
 		
 	}

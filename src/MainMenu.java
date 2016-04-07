@@ -39,9 +39,9 @@ public class MainMenu extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == play){
-			
+			ctx.getWindow().show("game");
 		} else if (e.getSource() == howToPlay) {
-			// TODO show instructions
+			ctx.getWindow().show("instructions");
 		}
 	}
 

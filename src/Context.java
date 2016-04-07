@@ -7,16 +7,20 @@ public class Context {
 	private Ticker ticker;
 	private Game game;
 	private MainMenu mainMenu;
+	private Instructions instructions;
 
-	protected Context(Window window, Ticker ticker, Game game, MainMenu mainMenu) {
+	protected Context(Window window, Ticker ticker, Game game,
+			MainMenu mainMenu, Instructions instructions) {
         this.window = window;
         this.ticker = ticker;
         this.game = game;
-		this.setMainMenu(mainMenu);
+		this.mainMenu = mainMenu;
+		this.instructions = instructions;
 		this.window.setContext(this);
 		this.ticker.setContext(this);
 		this.game.setContext(this);
 		this.mainMenu.setContext(this);
+		this.instructions.setContext(this);
     }
 
     public Window getWindow() {
@@ -51,17 +55,27 @@ public class Context {
 		this.mainMenu = mainMenu;
 	}
 
+	public Instructions getInstructions() {
+		return instructions;
+	}
+
+	public void setInstructions(Instructions instructions) {
+		this.instructions = instructions;
+	}
+
 	public static class Factory {
 	    private Window w;
 	    private Ticker t;
 	    private Game g;
 		private MainMenu mm;
+		private Instructions i;
 
 		public Factory() {
 			this.w = null;
 			this.t = null;
 			this.g = null;
 			this.mm = null;
+			this.i = null;
 		}
 
 	    public Window getWindow() {
@@ -101,6 +115,15 @@ public class Context {
 			return this;
 		}
 
+		public Instructions getInstructions() {
+			return i;
+		}
+
+		public Factory setInstructions(Instructions i) {
+			this.i = i;
+			return this;
+		}
+
 	    public Context create() {
 	        if (w == null) {
 	            w = new Window();
@@ -114,7 +137,10 @@ public class Context {
 			if (mm == null) {
 				mm = new MainMenu();
 			}
-			return new Context(w, t, g, mm);
+			if (i == null) {
+				i = new Instructions();
+			}
+			return new Context(w, t, g, mm, i);
 	    }
 
 	}

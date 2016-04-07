@@ -1,4 +1,5 @@
 import java.awt.CardLayout;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,34 +12,42 @@ import javax.swing.Timer;
 
 public class Window {
 
-	private Context ctx;
+	protected Context ctx;
 	protected Timer timer;
-	private JMenuBar menu;
+	protected JFrame frame;
+	protected JMenuBar menu;
+	protected Container contentPane;
+	protected CardLayout layout;
 
 	public static void main(String[] args) {
 		new Window();
 	}
 
 	public Window() {
-		JFrame f = new JFrame("Word game");
-		f.setSize(1280, 720);
-		f.setLocationRelativeTo(null);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame = new JFrame("Word game");
+		frame.setSize(1280, 720);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		CardLayout l = new CardLayout();
+		layout = new CardLayout();
 
-		f.getContentPane().setLayout(l);
+		contentPane = frame.getContentPane();
+		contentPane.setLayout(layout);
 
 		this.ctx = new Context.Factory().setWindow(this).create();
+
 		this.timer = new Timer(1000 / Context.TICK, ctx.getTicker());
 
-		MainMenu mm = new MainMenu();
+		contentPane.add(ctx.getMainMenu());
+		layout.addLayoutComponent(ctx.getMainMenu(), "main-menu");
 
-		f.getContentPane().add(mm);
-		f.getContentPane().add(ctx.getGame());
-		l.addLayoutComponent(ctx.getGame(), "game");
-		l.addLayoutComponent(mm, "main-menu");
-		l.show(f.getContentPane(), "main-menu");
+		contentPane.add(ctx.getGame());
+		layout.addLayoutComponent(ctx.getGame(), "game");
+
+		contentPane.add(ctx.getInstructions());
+		layout.addLayoutComponent(ctx.getInstructions(), "instructions");
+
+		layout.show(contentPane, "main-menu");
 		// l.show(f.getContentPane(), "game");
 
 		menu = new JMenuBar();
@@ -55,7 +64,19 @@ public class Window {
 		menu.add(menuGame);
 
 		timer.start();
-		f.setVisible(true);
+		frame.setVisible(true);
+	}
+
+	public void show(String name) {
+		layout.show(contentPane, name);
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
 	}
 
 	public Context getContext() {
