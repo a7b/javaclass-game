@@ -1,14 +1,9 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-<<<<<<< HEAD
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-=======
 import java.awt.RenderingHints;
->>>>>>> 60a6ef21e26011b5d3ab4465101c3eb26b00aab2
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
