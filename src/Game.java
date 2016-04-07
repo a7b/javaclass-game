@@ -1,16 +1,19 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Timer;
 
 import javax.swing.JPanel;
 
-public class Game extends JPanel implements KeyListener {
+public class Game extends JPanel implements KeyListener, ActionListener {
 
 	private static final long serialVersionUID = 469989049178129651L;
 
@@ -19,6 +22,7 @@ public class Game extends JPanel implements KeyListener {
 	private AffineTransform cannonTransform;
 	private WorldObject cannonBody;
 	private WorldObject cannonBarrel;
+	private Timer tm;
 
 	Game() {
 		cannonTransform = new AffineTransform();
@@ -28,6 +32,8 @@ public class Game extends JPanel implements KeyListener {
 				cannonTransform);
 
 		cannonTransform.translate(100, 100);
+		
+		tm = new Timer(5000, this)
 	}
 
 	@Override
@@ -67,10 +73,16 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		
+		if (e.getSource() == " "){
+			tm = new Timer();
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {
+		
+	}
+	
+	public void actionPerformed(ActionEvent e) {
 		
 	}
 }
