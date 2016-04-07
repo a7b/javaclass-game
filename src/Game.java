@@ -1,10 +1,14 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+<<<<<<< HEAD
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+=======
+import java.awt.RenderingHints;
+>>>>>>> 60a6ef21e26011b5d3ab4465101c3eb26b00aab2
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -35,6 +39,10 @@ public class Game extends JPanel implements KeyListener {
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		Graphics2D g = (Graphics2D) graphics;
+
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+
 		g.drawString("Time: " + System.currentTimeMillis(), 100, 100);
 
 		g.setColor(new Color(0x9E, 0x9E, 0x9E));
@@ -46,7 +54,9 @@ public class Game extends JPanel implements KeyListener {
 	public void tick() {
 		// cannonTransform.translate(10.0 / Context.TICK, 0);
 		// cannonTransform.rotate(Math.PI / Context.TICK, 50, 50);
-		repaint();
+		if (this.isVisible()) {
+			repaint();
+		}
 	}
 
 	public Context getContext() {
