@@ -47,9 +47,9 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 		g.drawString("Time: " + System.currentTimeMillis(), 100, 100);
 
 		g.setColor(new Color(0x9E, 0x9E, 0x9E));
-		g.fill(cannonBarrel.render());
+		g.fill(cannonBarrel.renderMesh());
 		g.setColor(new Color(0x60, 0x7D, 0x8B));
-		g.fill(cannonBody.render());
+		g.fill(cannonBody.renderMesh());
 	}
 
 	public void tick() {
