@@ -20,6 +20,7 @@ public class LaserBeam implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == tm){
+			
 		}
 	}
 }
