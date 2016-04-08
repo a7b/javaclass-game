@@ -9,12 +9,15 @@ import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 public class Game extends JPanel implements KeyListener, ActionListener {
 
 	private static final long serialVersionUID = 469989049178129651L;
+
+	public ArrayList<WorldObject> objects;
 
 	private static final double SPEED = 50;
 	private static final double REDUCED_SPEED = SPEED / Context.TICK;
@@ -27,13 +30,20 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 
 	Game() {
 		addKeyListener(this);
+		objects = new ArrayList<>();
 		cannonTransform = new AffineTransform();
 		cannonBody = new WorldObject(new Ellipse2D.Double(0, 0, 100, 100),
 				cannonTransform);
 		cannonBarrel = new WorldObject(new Rectangle2D.Double(30, 40, 100, 20),
 				cannonTransform);
 
+		cannonBarrel.setColor(new Color(0x9E, 0x9E, 0x9E));
+		cannonBody.setColor(new Color(0x60, 0x7D, 0x8B));
+
 		cannonTransform.translate(100, 100);
+
+		objects.add(cannonBarrel);
+		objects.add(cannonBody);
 	}
 
 	@Override
@@ -46,10 +56,9 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 
 		g.drawString("Time: " + System.currentTimeMillis(), 100, 100);
 
-		g.setColor(new Color(0x9E, 0x9E, 0x9E));
-		g.fill(cannonBarrel.renderMesh());
-		g.setColor(new Color(0x60, 0x7D, 0x8B));
-		g.fill(cannonBody.renderMesh());
+		objects.forEach((o) -> {
+			o.render(g);
+		});
 	}
 
 	public void tick() {
