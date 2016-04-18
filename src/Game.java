@@ -12,6 +12,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class Game extends JPanel implements KeyListener, ActionListener {
 
@@ -27,6 +28,10 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 	private AffineTransform cannonTransform;
 	private WorldObject cannonBody;
 	private WorldObject cannonBarrel;
+	
+	private boolean isMovingLeft = false;
+	private boolean isMovingRight = false;
+	private Timer tm;
 
 	Game() {
 		addKeyListener(this);
@@ -44,6 +49,8 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 
 		objects.add(cannonBarrel);
 		objects.add(cannonBody);
+		
+		tm = new Timer(25, this);
 	}
 
 	@Override
@@ -86,29 +93,55 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_W:
-			cannonTransform.translate(SPEED, 0);
-			break;
+		switch (e.getKeyChar()) {
 		case KeyEvent.VK_A:
-
+			isMovingRight = false;
+			isMovingLeft = true;
 			break;
-		case KeyEvent.VK_S:
-
-			break;
+			
 		case KeyEvent.VK_D:
-
+			isMovingLeft = false;
+			isMovingRight = true;
+			break;
+			
+		case KeyEvent.VK_LEFT:
+			isMovingRight = false;
+			isMovingLeft = true;
+			break;
+			
+		case KeyEvent.VK_RIGHT:
+			isMovingLeft = false;
+			isMovingRight = true;
 			break;
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		switch (e.getKeyChar()){
+		case KeyEvent.VK_A:
+			isMovingLeft = false;
+			break;
+			
+		case KeyEvent.VK_D:
+			isMovingRight = false;
+			break;
+			
+		case KeyEvent.VK_LEFT:
+			isMovingLeft = false;
+			break;
+		
+		case KeyEvent.VK_RIGHT:
+			isMovingRight = false;
+			break;
+		}
 		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		if (e.getSource() == tm){
+			
+		}
 	}
 }
