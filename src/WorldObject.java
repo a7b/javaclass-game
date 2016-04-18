@@ -3,85 +3,97 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.util.LinkedList;
 
 
 public class WorldObject {
 
-	protected GeneralPath p;
-	protected AffineTransform at;
-	protected double[] center;
-	protected Color color;
+	private static final Double[] ORIGIN = { Double.valueOf(0),
+			Double.valueOf(0) };
+
+	protected LinkedList<Shape> shapes;
+	protected LinkedList<AffineTransform> transforms;
+	protected LinkedList<Double[]> centers;
+	protected LinkedList<Color> colors;
+
+	protected AffineTransform transform;
 
 	public WorldObject() {
 		this(new GeneralPath());
 	}
 
-	public WorldObject(Shape s) {
-		this(new GeneralPath(s));
-	}
-
-	public WorldObject(Shape s, AffineTransform at) {
-		this(new GeneralPath(s), at, new double[] { 0, 0 });
-	}
-
-	public WorldObject(Shape s, AffineTransform at, double[] center) {
-		this(new GeneralPath(s), at, center);
-	}
-
 	public WorldObject(GeneralPath p) {
-		this(p, new AffineTransform(), new double[] { 0, 0 });
+		this((Shape) p);
 	}
 
 	public WorldObject(GeneralPath p, AffineTransform at) {
-		this(p, at, new double[] { 0, 0 });
+		this((Shape) p, at);
 	}
 
-	public WorldObject(GeneralPath p, AffineTransform at, double[] center) {
-		this.p = p;
-		this.at = at;
-		this.center = center;
+	public WorldObject(Shape s) {
+		this(s, new AffineTransform());
+	}
+
+	public WorldObject(Shape s, AffineTransform at) {
+		this.shapes = new LinkedList<>();
+		this.transforms = new LinkedList<>();
+		this.centers = new LinkedList<>();
+		this.colors = new LinkedList<>();
+		this.shapes.push(s);
+		this.transforms.push(new AffineTransform());
+		this.centers.push(ORIGIN);
+		this.colors.push(null);
+		// the transform of the whole object
+		this.transform = at;
 	}
 
 	public void render(Graphics2D g) {
-		if (color != null) {
-			g.setColor(color);
+		for (int i = 0; i < shapes.size(); i++) {
+			Shape s = shapes.get(i);
+			s = transforms.get(i).createTransformedShape(s);
+			s = transform.createTransformedShape(s);
+			Color color = colors.get(i);
+			if (color != null) {
+				g.setColor(color);
+			}
+			g.fill(s);
 		}
-		g.fill(renderMesh());
 	}
 
-	public Shape renderMesh() {
-		return p.createTransformedShape(at);
+	public Shape renderMesh(Shape s) {
+		int index = shapes.indexOf(s);
+		return transforms.get(index).createTransformedShape(shapes.get(index));
 	}
 
-	public GeneralPath path() {
-		return p;
+	public LinkedList<Shape> getShapes() {
+		return shapes;
 	}
 
-	public void path(GeneralPath p) {
-		this.p = p;
+	public AffineTransform getTransform() {
+		return transform;
 	}
 
-	public AffineTransform transform() {
-		return this.at;
+	public AffineTransform getTransform(Shape s) {
+		return transforms.get(shapes.indexOf(s));
 	}
 
-	public void transform(AffineTransform at) {
-		this.at = at;
+	public void setTransform(Shape s, AffineTransform at) {
+		transforms.set(shapes.indexOf(s), at);
 	}
 
-	public double[] getCenter() {
-		return center;
+	public Double[] getCenter(Shape s) {
+		return centers.get(shapes.indexOf(s));
 	}
 
-	public void setCenter(double[] center) {
-		this.center = center;
+	public void setCenter(Shape s, Double[] center) {
+		centers.set(shapes.indexOf(s), center);
 	}
 
-	public Color getColor() {
-		return color;
+	public Color getColor(Shape s) {
+		return colors.get(shapes.indexOf(s));
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	public void setColor(Shape s, Color color) {
+		colors.set(shapes.indexOf(s), color);
 	}
 }

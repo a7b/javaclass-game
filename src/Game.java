@@ -2,11 +2,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -20,30 +20,23 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 	public ArrayList<WorldObject> objects;
 
 	private static final double SPEED = 50;
-	private static final double REDUCED_SPEED = SPEED / Context.TICK;
 
 	private Context ctx;
 
-	private AffineTransform cannonTransform;
-	private WorldObject cannonBody;
-	private WorldObject cannonBarrel;
+	private WorldObject cannon;
 
 	Game() {
 		addKeyListener(this);
 		objects = new ArrayList<>();
-		cannonTransform = new AffineTransform();
-		cannonBody = new WorldObject(new Ellipse2D.Double(0, 0, 100, 100),
-				cannonTransform);
-		cannonBarrel = new WorldObject(new Rectangle2D.Double(30, 40, 100, 20),
-				cannonTransform);
+		cannon = new WorldObject();
 
-		cannonBarrel.setColor(new Color(0x9E, 0x9E, 0x9E));
-		cannonBody.setColor(new Color(0x60, 0x7D, 0x8B));
+		cannon.getShapes().push(new Ellipse2D.Double(0, 0, 100, 100));
+		cannon.setColor(cannon.getShapes().getLast(), new Color(0x9E, 0x9E, 0x9E));
 
-		cannonTransform.translate(100, 100);
+		cannon.getShapes().push(new Rectangle2D.Double(30, 40, 100, 20));
+		cannon.setColor(cannon.getShapes().getLast(), new Color(0x60, 0x7D, 0x8B));
 
-		objects.add(cannonBarrel);
-		objects.add(cannonBody);
+		cannon.getTransform().translate(100, 100);
 	}
 
 	@Override
@@ -62,11 +55,10 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 	}
 
 	public void tick() {
-		// cannonTransform.translate(10.0 / Context.TICK, 0);
-		// cannonTransform.rotate(Math.PI / Context.TICK, 50, 50);
+		cannon.getTransform().translate(10.0 / Context.TICK, 0);
 		
 		if (this.isVisible()) {
-			
+			System.out.println("visible");
 			repaint();
 		}
 	}
@@ -88,7 +80,7 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_W:
-			cannonTransform.translate(SPEED, 0);
+
 			break;
 		case KeyEvent.VK_A:
 
