@@ -66,6 +66,7 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 		// cannonTransform.rotate(Math.PI / Context.TICK, 50, 50);
 		
 		if (this.isVisible()) {
+			
 			repaint();
 		}
 	}
