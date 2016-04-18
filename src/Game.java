@@ -51,6 +51,7 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 		objects.add(cannonBody);
 		
 		tm = new Timer(25, this);
+		tm.start();
 	}
 
 	@Override
@@ -93,6 +94,7 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		System.out.println("keyPressed");
 		switch (e.getKeyChar()) {
 		case KeyEvent.VK_A:
 			isMovingRight = false;
@@ -118,6 +120,7 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		System.out.println("keyReleased");
 		switch (e.getKeyChar()){
 		case KeyEvent.VK_A:
 			isMovingLeft = false;
@@ -141,7 +144,14 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == tm){
-			
+			if (isMovingLeft == true){
+				System.out.println("Left Triggered");
+				cannonTransform.rotate(500);
+			}
+			else if (isMovingRight == true){
+				System.out.println("Right Triggered");
+				cannonTransform.rotate(-500);
+			}
 		}
 	}
 }
