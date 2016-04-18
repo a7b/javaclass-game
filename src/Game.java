@@ -89,7 +89,7 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
-		
+		System.out.println("hi");
 	}
 
 	@Override
