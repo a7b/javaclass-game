@@ -8,10 +8,9 @@ import javax.swing.Timer;
 
 
 public class LaserBeam extends WorldObject{
-	private Timer tm;
 	
-	LaserBeam(int radians) {
-		super(new Rectangle2D.Double(640, 0, 10, 1280));
+	LaserBeam(int radians){
+		super(new Rectangle2D.Double(635, 0, 10, 1280));
 		setColor(Color.GREEN);
 		at.rotate(radians);
 	}
