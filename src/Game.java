@@ -152,6 +152,7 @@ public class Game extends JPanel implements KeyListener, ActionListener {
 				System.out.println("Right Triggered");
 				cannonTransform.rotate(-500);
 			}
+			repaint();
 		}
 	}
 }
