@@ -3,7 +3,8 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-import java.util.LinkedList;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 
 public class WorldObject {
@@ -11,10 +12,10 @@ public class WorldObject {
 	private static final Double[] ORIGIN = { Double.valueOf(0),
 			Double.valueOf(0) };
 
-	protected LinkedList<Shape> shapes;
-	protected LinkedList<AffineTransform> transforms;
-	protected LinkedList<Double[]> centers;
-	protected LinkedList<Color> colors;
+	protected ArrayList<Shape> shapes;
+	protected ArrayList<AffineTransform> transforms;
+	protected ArrayList<Double[]> centers;
+	protected ArrayList<Color> colors;
 
 	protected AffineTransform transform;
 
@@ -35,14 +36,14 @@ public class WorldObject {
 	}
 
 	public WorldObject(Shape s, AffineTransform at) {
-		this.shapes = new LinkedList<>();
-		this.transforms = new LinkedList<>();
-		this.centers = new LinkedList<>();
-		this.colors = new LinkedList<>();
-		this.shapes.push(s);
-		this.transforms.push(new AffineTransform());
-		this.centers.push(ORIGIN);
-		this.colors.push(null);
+		this.shapes = new ArrayList<>();
+		this.transforms = new ArrayList<>();
+		this.centers = new ArrayList<>();
+		this.colors = new ArrayList<>();
+		this.shapes.add(s);
+		this.transforms.add(new AffineTransform());
+		this.centers.add(ORIGIN);
+		this.colors.add(Color.BLACK);
 		// the transform of the whole object
 		this.transform = at;
 	}
@@ -50,12 +51,11 @@ public class WorldObject {
 	public void render(Graphics2D g) {
 		for (int i = 0; i < shapes.size(); i++) {
 			Shape s = shapes.get(i);
+			// transform each individual Shape
 			s = transforms.get(i).createTransformedShape(s);
+			// transform the object
 			s = transform.createTransformedShape(s);
-			Color color = colors.get(i);
-			if (color != null) {
-				g.setColor(color);
-			}
+			g.setColor(colors.get(i));
 			g.fill(s);
 		}
 	}
@@ -65,8 +65,22 @@ public class WorldObject {
 		return transforms.get(index).createTransformedShape(shapes.get(index));
 	}
 
-	public LinkedList<Shape> getShapes() {
+	public ArrayList<Shape> getShapes() {
 		return shapes;
+	}
+
+	public Shape addShape(Shape s) {
+		getShapes().add(s);
+		Rectangle2D bb = s.getBounds2D();
+		Double[] center = {Double.valueOf(bb.getCenterX()), Double.valueOf(bb.getCenterY())};
+		setTransform(s, new AffineTransform());
+		setCenter(s, center);
+		setColor(s, Color.BLACK);
+		return s;
+	}
+
+	public Shape lastShape() {
+		return getShapes().get(shapes.size() - 1);
 	}
 
 	public AffineTransform getTransform() {
@@ -78,7 +92,12 @@ public class WorldObject {
 	}
 
 	public void setTransform(Shape s, AffineTransform at) {
-		transforms.set(shapes.indexOf(s), at);
+		int index = shapes.indexOf(s);
+		if (index >= transforms.size()) {
+			transforms.add(at);
+		} else {
+			transforms.set(index, at);
+		}
 	}
 
 	public Double[] getCenter(Shape s) {
@@ -86,7 +105,12 @@ public class WorldObject {
 	}
 
 	public void setCenter(Shape s, Double[] center) {
-		centers.set(shapes.indexOf(s), center);
+		int index = shapes.indexOf(s);
+		if (index >= centers.size()) {
+			centers.add(center);
+		} else {
+			centers.set(index, center);
+		}
 	}
 
 	public Color getColor(Shape s) {
@@ -94,6 +118,11 @@ public class WorldObject {
 	}
 
 	public void setColor(Shape s, Color color) {
-		colors.set(shapes.indexOf(s), color);
+		int index = shapes.indexOf(s);
+		if (index >= colors.size()) {
+			colors.add(color);
+		} else {
+			colors.set(index, color);
+		}
 	}
 }
