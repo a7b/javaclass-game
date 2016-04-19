@@ -28,8 +28,9 @@ public class Instructions extends JPanel implements ActionListener{
 						+ "Type a word that you see floating down the screen into the text box to load the cannon<br>"
 						+ "Pressing \"Enter\" will shoot a laser beam<br>"
 						+ "Use the mouse to aim the cannon<br>"
-						+ "If the laser collides with the same word as the word that is typed in the box, the player gets a point, and the word disappears<br>"
-						+ "If a word reaches the bottom of the screen before it is destroyed, the player will lose a life<br>"
+						+ "If the laser collides with the same word as the word that is typed in the box, you get a point, and the word disappears<br>"
+						+ "If a word reaches the bottom of the screen before it is destroyed, you will lose a life<br>"
+						+ "Stay alive for as long as possible!<br>"
 						+ "</html>");
 		add(instructionsLabel);
 		
