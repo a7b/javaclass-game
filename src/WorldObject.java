@@ -18,9 +18,10 @@ public class WorldObject {
 	protected ArrayList<Color> colors;
 
 	protected AffineTransform transform;
+	protected Double[] center;
 
 	public WorldObject() {
-		this(new GeneralPath());
+		this(null);
 	}
 
 	public WorldObject(GeneralPath p) {
@@ -36,14 +37,26 @@ public class WorldObject {
 	}
 
 	public WorldObject(Shape s, AffineTransform at) {
+		// make non null
+		if (at == null) {
+			at = new AffineTransform();
+		}
 		this.shapes = new ArrayList<>();
 		this.transforms = new ArrayList<>();
 		this.centers = new ArrayList<>();
 		this.colors = new ArrayList<>();
-		this.shapes.add(s);
-		this.transforms.add(new AffineTransform());
-		this.centers.add(ORIGIN);
-		this.colors.add(Color.BLACK);
+		if (s != null) {
+			this.shapes.add(s);
+			this.transforms.add(new AffineTransform());
+			this.centers.add(ORIGIN);
+			this.colors.add(Color.BLACK);
+			// the center of the whole object
+			Rectangle2D bb = s.getBounds2D();
+			this.center = new Double[] { bb.getCenterX(), bb.getCenterY() };
+		} else {
+			// default center 0,0
+			this.center = ORIGIN;
+		}
 		// the transform of the whole object
 		this.transform = at;
 	}
@@ -124,5 +137,13 @@ public class WorldObject {
 		} else {
 			colors.set(index, color);
 		}
+	}
+
+	public Double[] getCenter() {
+		return center;
+	}
+
+	public void setCenter(Double[] center) {
+		this.center = center;
 	}
 }
