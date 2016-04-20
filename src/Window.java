@@ -62,6 +62,9 @@ public class Window {
 
 		menuGame.add(menuExit);
 		menu.add(menuGame);
+		
+		frame.setFocusable(true);
+		frame.addKeyListener(ctx.getGame());
 
 		timer.start();
 		frame.setVisible(true);

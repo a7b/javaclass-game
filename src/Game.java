@@ -26,7 +26,7 @@ public class Game extends JPanel implements KeyListener {
 	private boolean isMovingRight;
 
 	Game() {
-		addKeyListener(this);
+		
 		isMovingLeft = false;
 		isMovingRight = false;
 
@@ -35,13 +35,14 @@ public class Game extends JPanel implements KeyListener {
 
 		objects.add(cannon);
 
-		cannon.addShape(new Rectangle2D.Double(30, 40, 100, 20));
+		//cannon.addShape(new Rectangle2D.Double(30, 40, 100, 20));
+		cannon.addShape(new Rectangle2D.Double(40, -30, 20, 100));
 		cannon.setColor(cannon.lastShape(), new Color(0x60, 0x7D, 0x8B));
 
 		cannon.addShape(new Ellipse2D.Double(0, 0, 100, 100));
 		cannon.setColor(cannon.lastShape(), new Color(0x9E, 0x9E, 0x9E));
 
-		cannon.getTransform().translate(100, 100);
+		cannon.getTransform().translate(640-50, 720-50-10);
 
 	}
 
@@ -61,14 +62,14 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void tick() {
-		cannon.getTransform().translate(50.0 / Context.TICK, 0);
+//		cannon.getTransform().translate(50.0 / Context.TICK, 0);
 
+		Double[] center = cannon.getCenter(cannon.lastShape());
+		
 		if (isMovingLeft == true) {
-			System.out.println("Left Triggered");
-			// cannon.getTransform().rotate(Math.PI / 2 / Context.TICK);
+			cannon.getTransform().rotate(-Math.PI / 2 / Context.TICK, center[0], center[1]);
 		} else if (isMovingRight == true) {
-			System.out.println("Right Triggered");
-			// cannon.getTransform().rotate(Math.PI / 2 / Context.TICK);
+			cannon.getTransform().rotate(Math.PI / 2 / Context.TICK, center[0], center[1]);
 		}
 
 		if (this.isVisible()) {
@@ -86,44 +87,51 @@ public class Game extends JPanel implements KeyListener {
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.println("hi");
+		if (!this.isVisible()) {
+			return;
+		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("keyPressed");
-		switch (e.getKeyChar()) {
+		if (!this.isVisible()) {
+			return;
+		}
+		switch (e.getKeyCode()) {
 		case KeyEvent.VK_A:
-			isMovingRight = false;
-			isMovingLeft = true;
-			break;
-			
-		case KeyEvent.VK_D:
-			isMovingLeft = false;
-			isMovingRight = true;
-			break;
-			
 		case KeyEvent.VK_LEFT:
 			isMovingRight = false;
 			isMovingLeft = true;
 			break;
 			
+		case KeyEvent.VK_D:
 		case KeyEvent.VK_RIGHT:
 			isMovingLeft = false;
 			isMovingRight = true;
 			break;
+		case KeyEvent.VK_SPACE:
+			new LaserBeam(5);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if (!this.isVisible()) {
+			return;
+		}
+		
+		isMovingRight = false;
+		isMovingLeft = false;
+		/*
 		System.out.println("keyReleased");
 		switch (e.getKeyChar()){
 		case KeyEvent.VK_A:
+			isMovingRight = false;
 			isMovingLeft = false;
 			break;
 			
 		case KeyEvent.VK_D:
+			isMovingLeft = false;
 			isMovingRight = false;
 			break;
 			
@@ -134,7 +142,7 @@ public class Game extends JPanel implements KeyListener {
 		case KeyEvent.VK_RIGHT:
 			isMovingRight = false;
 			break;
-		}
+		}*/
 		
 	}
 }
