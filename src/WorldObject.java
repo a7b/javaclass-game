@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class WorldObject {
 
-	private static final Double[] ORIGIN = { Double.valueOf(0),
+	protected static final Double[] ORIGIN = { Double.valueOf(0),
 			Double.valueOf(0) };
 
 	protected ArrayList<Shape> shapes;

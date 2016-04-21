@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -55,8 +56,6 @@ public class Game extends JPanel implements KeyListener {
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-
-		g.drawString("Time: " + System.currentTimeMillis(), 100, 100);
 
 		objects.forEach((o) -> {
 			o.render(g);
@@ -111,7 +110,12 @@ public class Game extends JPanel implements KeyListener {
 			direction = Direction.RIGHT;
 			break;
 		case KeyEvent.VK_SPACE:
-			new LaserBeam(5);
+			// get the rotation
+			AffineTransform at = cannon.getTransform();
+			double rotation = Math.atan2(at.getShearY(), at.getScaleY());
+			Double[] laserPosition = cannon.getCenter();
+			System.out.println(laserPosition[0] + " " + laserPosition[1]);
+			objects.add(new LaserBeam(rotation, laserPosition));
 			repaint();
 		}
 	}
