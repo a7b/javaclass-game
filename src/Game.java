@@ -16,7 +16,7 @@ public class Game extends JPanel implements KeyListener {
 
 	public ArrayList<WorldObject> objects;
 
-	private static final double SPEED = 50;
+	private static final double SPEED = 100; // radians per second
 
 	private Context ctx;
 
@@ -67,9 +67,9 @@ public class Game extends JPanel implements KeyListener {
 		Double[] center = cannon.getCenter(cannon.lastShape());
 		
 		if (isMovingLeft == true) {
-			cannon.getTransform().rotate(-Math.PI / 2 / Context.TICK, center[0], center[1]);
+			cannon.getTransform().rotate(-Math.PI/ Context.TICK, center[0], center[1]);
 		} else if (isMovingRight == true) {
-			cannon.getTransform().rotate(Math.PI / 2 / Context.TICK, center[0], center[1]);
+			cannon.getTransform().rotate(Math.PI/ Context.TICK, center[0], center[1]);
 		}
 
 		if (this.isVisible()) {
@@ -111,6 +111,7 @@ public class Game extends JPanel implements KeyListener {
 			break;
 		case KeyEvent.VK_SPACE:
 			new LaserBeam(5);
+			repaint();
 		}
 	}
 
