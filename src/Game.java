@@ -22,13 +22,15 @@ public class Game extends JPanel implements KeyListener {
 
 	private WorldObject cannon;
 
-	private boolean isMovingLeft;
-	private boolean isMovingRight;
+	private boolean cmdLeft;
+	private boolean cmdRight;
+
+	private Direction direction;
 
 	Game() {
-		
-		isMovingLeft = false;
-		isMovingRight = false;
+		cmdLeft = false;
+		cmdRight = false;
+		direction = Direction.NEUTRAL;
 
 		objects = new ArrayList<>();
 		cannon = new WorldObject();
@@ -66,9 +68,9 @@ public class Game extends JPanel implements KeyListener {
 
 		Double[] center = cannon.getCenter(cannon.lastShape());
 		
-		if (isMovingLeft == true) {
+		if (direction == Direction.LEFT) {
 			cannon.getTransform().rotate(-Math.PI / 2 / Context.TICK, center[0], center[1]);
-		} else if (isMovingRight == true) {
+		} else if (direction == Direction.RIGHT) {
 			cannon.getTransform().rotate(Math.PI / 2 / Context.TICK, center[0], center[1]);
 		}
 
@@ -100,14 +102,13 @@ public class Game extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_A:
 		case KeyEvent.VK_LEFT:
-			isMovingRight = false;
-			isMovingLeft = true;
+			cmdLeft = true;
+			direction = Direction.LEFT;
 			break;
-			
 		case KeyEvent.VK_D:
 		case KeyEvent.VK_RIGHT:
-			isMovingLeft = false;
-			isMovingRight = true;
+			cmdRight = true;
+			direction = Direction.RIGHT;
 			break;
 		case KeyEvent.VK_SPACE:
 			new LaserBeam(5);
@@ -119,30 +120,23 @@ public class Game extends JPanel implements KeyListener {
 		if (!this.isVisible()) {
 			return;
 		}
-		
-		isMovingRight = false;
-		isMovingLeft = false;
-		/*
-		System.out.println("keyReleased");
-		switch (e.getKeyChar()){
+		switch (e.getKeyCode()) {
 		case KeyEvent.VK_A:
-			isMovingRight = false;
-			isMovingLeft = false;
-			break;
-			
-		case KeyEvent.VK_D:
-			isMovingLeft = false;
-			isMovingRight = false;
-			break;
-			
 		case KeyEvent.VK_LEFT:
-			isMovingLeft = false;
+			cmdLeft = false;
+			direction = cmdRight ? Direction.RIGHT : Direction.NEUTRAL;
 			break;
-		
+		case KeyEvent.VK_D:
 		case KeyEvent.VK_RIGHT:
-			isMovingRight = false;
+			cmdRight = false;
+			direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
 			break;
-		}*/
-		
+		case KeyEvent.VK_SPACE:
+			new LaserBeam(5);
+		}
+	}
+
+	private enum Direction {
+		RIGHT, NEUTRAL, LEFT
 	}
 }
