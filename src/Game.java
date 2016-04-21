@@ -38,11 +38,11 @@ public class Game extends JPanel implements KeyListener {
 		objects.add(cannon);
 
 		//cannon.addShape(new Rectangle2D.Double(30, 40, 100, 20));
-		cannon.addShape(new Rectangle2D.Double(40, -30, 20, 100));
-		cannon.setColor(cannon.lastShape(), new Color(0x60, 0x7D, 0x8B));
+		cannon.addShape(new Rectangle2D.Double(40, -30, 20, 100)).color(
+				new Color(0x60, 0x7D, 0x8B));
 
-		cannon.addShape(new Ellipse2D.Double(0, 0, 100, 100));
-		cannon.setColor(cannon.lastShape(), new Color(0x9E, 0x9E, 0x9E));
+		cannon.addShape(new Ellipse2D.Double(0, 0, 100, 100)).color(
+				new Color(0x9E, 0x9E, 0x9E));
 
 		cannon.getTransform().translate(640-50, 720-50-10);
 

@@ -46,13 +46,7 @@ public class WorldObject {
 		this.centers = new ArrayList<>();
 		this.colors = new ArrayList<>();
 		if (s != null) {
-			this.shapes.add(s);
-			this.transforms.add(new AffineTransform());
-			this.centers.add(ORIGIN);
-			this.colors.add(Color.BLACK);
-			// the center of the whole object
-			Rectangle2D bb = s.getBounds2D();
-			this.center = new Double[] { bb.getCenterX(), bb.getCenterY() };
+			addShape(s);
 		} else {
 			// default center 0,0
 			this.center = ORIGIN;
@@ -82,26 +76,32 @@ public class WorldObject {
 		return shapes;
 	}
 
-	public Shape addShape(Shape s) {
+	public Modifyable addShape(Shape s) {
 		getShapes().add(s);
 		Rectangle2D bb = s.getBounds2D();
-		Double[] center = {Double.valueOf(bb.getCenterX()), Double.valueOf(bb.getCenterY())};
+		Double[] center = { bb.getCenterX(), bb.getCenterY() };
 		setTransform(s, new AffineTransform());
 		setCenter(s, center);
 		setColor(s, Color.BLACK);
-		return s;
+		return new Modifyable(s);
 	}
 
 	public Shape lastShape() {
-		return getShapes().get(shapes.size() - 1);
+		return shapes.get(shapes.size() - 1);
 	}
+
 
 	public AffineTransform getTransform() {
 		return transform;
 	}
 
+	// TODO make methods like this
 	public AffineTransform getTransform(Shape s) {
-		return transforms.get(shapes.indexOf(s));
+		return getTransform(shapes.indexOf(s));
+	}
+
+	public AffineTransform getTransform(int index) {
+		return transforms.get(index);
 	}
 
 	public void setTransform(Shape s, AffineTransform at) {
@@ -145,5 +145,55 @@ public class WorldObject {
 
 	public void setCenter(Double[] center) {
 		this.center = center;
+	}
+
+	public class Modifyable {
+		private Shape shape;
+		private int index;
+
+		public Modifyable(Shape shape) {
+			this.shape = shape;
+			this.index = shapes.indexOf(shape);
+		}
+
+		public Shape getShape() {
+			return shape;
+		}
+
+		public AffineTransform transform() {
+			return transforms.get(index);
+		}
+
+		public void transform(AffineTransform at) {
+			if (index >= transforms.size()) {
+				transforms.add(at);
+			} else {
+				transforms.set(index, at);
+			}
+		}
+
+		public Double[] center() {
+			return centers.get(index);
+		}
+
+		public void center(Double[] center) {
+			if (index >= centers.size()) {
+				centers.add(center);
+			} else {
+				centers.set(index, center);
+			}
+		}
+
+		public Color color() {
+			return colors.get(index);
+		}
+
+		public void color(Color color) {
+			if (index >= colors.size()) {
+				colors.add(color);
+			} else {
+				colors.set(index, color);
+			}
+		}
 	}
 }
