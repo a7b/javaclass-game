@@ -114,7 +114,6 @@ public class Game extends JPanel implements KeyListener {
 			AffineTransform at = cannon.getTransform();
 			double rotation = Math.atan2(at.getShearY(), at.getScaleY());
 			Double[] laserPosition = cannon.getCenter();
-			System.out.println(laserPosition[0] + " " + laserPosition[1]);
 			objects.add(new LaserBeam(rotation, laserPosition));
 			repaint();
 		}
@@ -137,7 +136,7 @@ public class Game extends JPanel implements KeyListener {
 			direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
 			break;
 		case KeyEvent.VK_SPACE:
-			new LaserBeam(5);
+			new LaserBeam(Math.PI/2);
 		}
 	}
 
