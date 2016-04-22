@@ -164,36 +164,39 @@ public class WorldObject {
 			return transforms.get(index);
 		}
 
-		public void transform(AffineTransform at) {
+		public Modifyable transform(AffineTransform at) {
 			if (index >= transforms.size()) {
 				transforms.add(at);
 			} else {
 				transforms.set(index, at);
 			}
+			return this;
 		}
 
 		public Double[] center() {
 			return centers.get(index);
 		}
 
-		public void center(Double[] center) {
+		public Modifyable center(Double[] center) {
 			if (index >= centers.size()) {
 				centers.add(center);
 			} else {
 				centers.set(index, center);
 			}
+			return this;
 		}
 
 		public Color color() {
 			return colors.get(index);
 		}
 
-		public void color(Color color) {
+		public Modifyable color(Color color) {
 			if (index >= colors.size()) {
 				colors.add(color);
 			} else {
 				colors.set(index, color);
 			}
+			return this;
 		}
 	}
 }
