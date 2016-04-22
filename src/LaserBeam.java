@@ -12,7 +12,6 @@ public class LaserBeam extends WorldObject {
 	}
 	
 	public LaserBeam(double radians, Double[] center) {
-		super();
 		addShape(new Rectangle2D.Double(635, 0, 10, 720)).color(Color.GREEN);
 		transform.rotate(radians);
 	}
