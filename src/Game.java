@@ -17,8 +17,6 @@ public class Game extends JPanel implements KeyListener {
 
 	public ArrayList<WorldObject> objects;
 
-	private static final double SPEED = 100; // radians per second
-
 	private Context ctx;
 
 	private WorldObject cannon;
@@ -45,7 +43,7 @@ public class Game extends JPanel implements KeyListener {
 		cannon.addShape(new Ellipse2D.Double(0, 0, 100, 100)).color(
 				new Color(0x9E, 0x9E, 0x9E));
 
-		cannon.getTransform().translate(640-50, 720-50-10);
+		cannon.getTransform().translate(590, 660);
 
 	}
 
