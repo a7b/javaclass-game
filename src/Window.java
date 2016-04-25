@@ -1,5 +1,6 @@
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,8 +26,7 @@ public class Window {
 
 	public Window() {
 		frame = new JFrame("Word game");
-		frame.setSize(1280, 720);
-		frame.setLocationRelativeTo(null);
+		frame.getContentPane().setPreferredSize(new Dimension(1280, 720));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		layout = new CardLayout();
@@ -62,7 +62,10 @@ public class Window {
 
 		menuGame.add(menuExit);
 		menu.add(menuGame);
-		
+
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
 		frame.setFocusable(true);
 		frame.addKeyListener(ctx.getGame());
 
