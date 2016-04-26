@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -44,6 +46,9 @@ public class Game extends JPanel implements KeyListener {
 	private String word = "";
 	private BufferedReader reader;
 	private int [] wordCoordinates = {600, 0};
+	
+	private ImageIcon i = new ImageIcon("src/background.jpg");
+	private Image background = i.getImage();
 
 	Game() throws IOException {
 		cmdLeft = false;
@@ -87,6 +92,8 @@ public class Game extends JPanel implements KeyListener {
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		Graphics2D g = (Graphics2D) graphics;
+		
+		g.drawImage(background, 0, 0, null);
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
