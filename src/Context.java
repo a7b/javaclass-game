@@ -3,7 +3,7 @@ import java.io.IOException;
 
 public class Context {
 
-	public static final int TICK = 250;
+	public static final int TICK = 100;
 
 	private Window window;
 	private Ticker ticker;

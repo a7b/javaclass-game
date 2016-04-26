@@ -43,12 +43,12 @@ public class Game extends JPanel implements KeyListener {
 
 	private Direction direction;
 	
-	private String word = "";
+	private String word;
 	private BufferedReader reader;
-	private int [] wordCoordinates = {600, 0};
 	
 	private ImageIcon i = new ImageIcon("src/background.jpg");
 	private Image background = i.getImage();
+	private double[] wordCoordinates;
 
 	Game() throws IOException {
 		cmdLeft = false;
@@ -77,6 +77,8 @@ public class Game extends JPanel implements KeyListener {
 		cannon.getTransform().translate(590, 660 - WORD_DISPLAY_HEIGHT);
 		cannon.setRotation(-Math.PI / 2);
 
+		wordCoordinates = new double[] { (int) (Math.random() * 1200) + 1, 0 };
+
 		reader = new BufferedReader(new FileReader("/usr/share/dict/words"));
 		
 		newWord();
@@ -104,10 +106,13 @@ public class Game extends JPanel implements KeyListener {
 		
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 69));
-		g.drawString(word, wordCoordinates[0], wordCoordinates[1]);
+		g.drawString(word, (int) wordCoordinates[0], (int) wordCoordinates[1]);
 	}
 
 	public void tick() throws IOException {
+		if (!this.isVisible()) {
+			return;
+		}
 		// decay laser beam
 		objects.removeIf(o -> o instanceof LaserBeam && ((LaserBeam) o).dead());
 		// travel laser beam
@@ -135,10 +140,9 @@ public class Game extends JPanel implements KeyListener {
 			cannon.rotate(Math.PI/ Context.TICK);
 		}
 
-		if (this.isVisible()) {
-			updateWord();
-			repaint();
-		}
+		updateWord();
+
+		repaint();
 	}
 
 	public Context getContext() {
