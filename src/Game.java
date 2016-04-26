@@ -76,9 +76,10 @@ public class Game extends JPanel implements KeyListener {
 		cannon.setCenter(center);
 
 		cannon.getTransform().translate(590, 660 - WORD_DISPLAY_HEIGHT);
-		reader = new BufferedReader(new FileReader("/usr/share/dict/words"));
 		cannon.setRotation(-Math.PI / 2);
 		newWord();
+
+		reader = new BufferedReader(new FileReader("/usr/share/dict/words"));
 
 		JPanel wordPanel = new JPanel();
 		wordPanel.setLayout(new BoxLayout(wordPanel, BoxLayout.X_AXIS));
