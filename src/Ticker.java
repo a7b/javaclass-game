@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 public class Ticker implements ActionListener {
@@ -11,7 +12,11 @@ public class Ticker implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ctx.getGame().tick();
+		try {
+			ctx.getGame().tick();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public Context getContext() {

@@ -1,18 +1,16 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Game extends JPanel implements KeyListener {
@@ -62,6 +60,8 @@ public class Game extends JPanel implements KeyListener {
 		cannon.getTransform().translate(590, 660);
 		reader = new BufferedReader(new FileReader("/usr/share/dict/words"));
 		cannon.setRotation(-Math.PI / 2);
+		
+		newWord();
 	}
 
 	@Override
@@ -75,11 +75,13 @@ public class Game extends JPanel implements KeyListener {
 		objects.forEach((o) -> {
 			o.render(g);
 		});
-
+		
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 69));
 		g.drawString(word, wordCoordinates[0], wordCoordinates[1]);
 	}
 
-	public void tick() {
+	public void tick() throws IOException {
 		// decay laser beam
 		objects.removeIf(o -> o instanceof LaserBeam && ((LaserBeam) o).dead());
 		// travel laser beam
@@ -108,6 +110,7 @@ public class Game extends JPanel implements KeyListener {
 		}
 
 		if (this.isVisible()) {
+			updateWord();
 			repaint();
 		}
 	}
@@ -170,8 +173,13 @@ public class Game extends JPanel implements KeyListener {
 	public void newWord() throws IOException{
 		word = reader.readLine();
 	}
-	public void updateWord(){
-		wordCoordinates[1]+=5;
+	public void updateWord() throws IOException{
+		wordCoordinates[1]+=1;
+		if (wordCoordinates[1] > 720+69){
+			newWord();
+			wordCoordinates[0] = (int)(Math.random()*1200)+1;
+			wordCoordinates[1] = 0;
+		}
 	}
 
 	private enum Direction {
