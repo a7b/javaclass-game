@@ -14,12 +14,12 @@ public class WorldObject {
 
 	protected ArrayList<Shape> shapes;
 	protected ArrayList<AffineTransform> transforms;
-	protected ArrayList<AffineTransform> rotations;
+	protected ArrayList<Double> rotations;
 	protected ArrayList<Double[]> centers;
 	protected ArrayList<Color> colors;
 
 	protected AffineTransform transform;
-	protected AffineTransform rotation;
+	protected Double rotation;
 	protected Double[] center;
 
 	public WorldObject() {
@@ -57,24 +57,36 @@ public class WorldObject {
 		}
 		// the transform of the whole object
 		this.transform = at;
-		this.rotation = new AffineTransform();
+		this.rotation = 0.;
 	}
 
 	public void render(Graphics2D g) {
 		for (int i = 0; i < shapes.size(); i++) {
-			Shape s = shapes.get(i);
-			// transform each individual Shape
-			s = transforms.get(i).createTransformedShape(s);
-			// transform the object
-			s = transform.createTransformedShape(s);
 			g.setColor(colors.get(i));
-			g.fill(s);
+			g.fill(renderMesh(i));
 		}
 	}
 
 	public Shape renderMesh(Shape s) {
-		int index = shapes.indexOf(s);
-		return transforms.get(index).createTransformedShape(shapes.get(index));
+		return renderMesh(shapes.indexOf(s));
+	}
+
+	public Shape renderMesh(int index) {
+		Shape shape = shapes.get(index);
+		Double[] localCenter = centers.get(index);
+
+		AffineTransform t = new AffineTransform();
+
+		// local transform
+		t.concatenate(transforms.get(index));
+		// local rotation
+		t.rotate(rotations.get(index), localCenter[0], localCenter[1]);
+		// global transform
+		t.concatenate(transform);
+		// global rotation
+		t.rotate(rotation, center[0], center[1]);
+
+		return t.createTransformedShape(shape);
 	}
 
 	public ArrayList<Shape> getShapes() {
@@ -86,7 +98,7 @@ public class WorldObject {
 		Rectangle2D bb = s.getBounds2D();
 		Double[] center = { bb.getCenterX(), bb.getCenterY() };
 		setTransform(s, new AffineTransform());
-		setRotation(s, new AffineTransform());
+		setRotation(s, 0.);
 		setCenter(s, center);
 		setColor(s, Color.BLACK);
 		return new Modifyable(s);
@@ -104,11 +116,16 @@ public class WorldObject {
 		this.transform = transform;
 	}
 
-	public AffineTransform getRotation() {
+	public WorldObject rotate(Double rotation) {
+		setRotation(rotation + getRotation());
+		return this;
+	}
+
+	public Double getRotation() {
 		return rotation;
 	}
 
-	public void setRotation(AffineTransform rotation) {
+	public void setRotation(Double rotation) {
 		this.rotation = rotation;
 	}
 
@@ -138,20 +155,20 @@ public class WorldObject {
 		}
 	}
 
-	public AffineTransform getRotation(Shape s) {
+	public Double getRotation(Shape s) {
 		return getRotation(shapes.indexOf(s));
 	}
 
-	public AffineTransform getRotation(int index) {
+	public Double getRotation(int index) {
 		return rotations.get(index);
 	}
 
-	public void setRotation(Shape s, AffineTransform at) {
+	public void setRotation(Shape s, Double rotation) {
 		int index = shapes.indexOf(s);
 		if (index >= rotations.size()) {
-			rotations.add(at);
+			rotations.add(rotation);
 		} else {
-			rotations.set(index, at);
+			rotations.set(index, rotation);
 		}
 	}
 
@@ -232,11 +249,11 @@ public class WorldObject {
 			return centers.get(index);
 		}
 
-		public Modifyable rotation(AffineTransform at) {
+		public Modifyable rotation(Double rotation) {
 			if (index >= rotations.size()) {
-				rotations.add(at);
+				rotations.add(rotation);
 			} else {
-				rotations.set(index, at);
+				rotations.set(index, rotation);
 			}
 			return this;
 		}

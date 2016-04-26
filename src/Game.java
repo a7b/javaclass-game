@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -40,10 +39,13 @@ public class Game extends JPanel implements KeyListener {
 		cannon.addShape(new Rectangle2D.Double(40, -30, 20, 100)).color(
 				new Color(0x60, 0x7D, 0x8B));
 
-		cannon.addShape(new Ellipse2D.Double(0, 0, 100, 100)).color(
-				new Color(0x9E, 0x9E, 0x9E));
+		Double[] center = cannon.addShape(new Ellipse2D.Double(0, 0, 100, 100)).color(new Color(0x9E, 0x9E, 0x9E))
+				.center();
+
+		cannon.setCenter(center);
 
 		cannon.getTransform().translate(590, 660);
+
 
 	}
 
@@ -61,14 +63,12 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void tick() {
-//		cannon.getTransform().translate(50.0 / Context.TICK, 0);
+		// Double[] center = cannon.getCenter(cannon.lastShape());
 
-		Double[] center = cannon.getCenter(cannon.lastShape());
-		
 		if (direction == Direction.LEFT) {
-			cannon.getTransform().rotate(-Math.PI/ Context.TICK, center[0], center[1]);
+			cannon.rotate(-Math.PI/ Context.TICK);
 		} else if (direction == Direction.RIGHT) {
-			cannon.getTransform().rotate(Math.PI/ Context.TICK, center[0], center[1]);
+			cannon.rotate(Math.PI/ Context.TICK);
 		}
 
 		if (this.isVisible()) {
@@ -108,12 +108,8 @@ public class Game extends JPanel implements KeyListener {
 			direction = Direction.RIGHT;
 			break;
 		case KeyEvent.VK_SPACE:
-			// get the rotation
-			AffineTransform at = cannon.getTransform();
-			double rotation = Math.atan2(at.getShearY(), at.getScaleY());
-			Double[] laserPosition = cannon.getCenter();
-			objects.add(new LaserBeam(rotation, laserPosition));
-			repaint();
+			objects.add(new LaserBeam(cannon.getRotation(), cannon.getCenter()));
+			break;
 		}
 	}
 
@@ -133,8 +129,6 @@ public class Game extends JPanel implements KeyListener {
 			cmdRight = false;
 			direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
 			break;
-		case KeyEvent.VK_SPACE:
-			new LaserBeam(Math.PI/2);
 		}
 	}
 
