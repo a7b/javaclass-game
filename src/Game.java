@@ -89,9 +89,9 @@ public class Game extends JPanel implements KeyListener {
 			timeLastShot = System.currentTimeMillis();
 		}
 
-		if (direction == Direction.LEFT) {
+		if (direction == Direction.LEFT && cannon.getRotation() > -Math.PI) {
 			cannon.rotate(-Math.PI/ Context.TICK);
-		} else if (direction == Direction.RIGHT) {
+		} else if (direction == Direction.RIGHT && cannon.getRotation() < 0) {
 			cannon.rotate(Math.PI/ Context.TICK);
 		}
 
