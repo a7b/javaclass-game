@@ -121,12 +121,10 @@ public class Game extends JPanel implements KeyListener {
 			return;
 		}
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_A:
 		case KeyEvent.VK_LEFT:
 			cmdLeft = true;
 			direction = Direction.LEFT;
 			break;
-		case KeyEvent.VK_D:
 		case KeyEvent.VK_RIGHT:
 			cmdRight = true;
 			direction = Direction.RIGHT;
@@ -143,12 +141,10 @@ public class Game extends JPanel implements KeyListener {
 			return;
 		}
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_A:
 		case KeyEvent.VK_LEFT:
 			cmdLeft = false;
 			direction = cmdRight ? Direction.RIGHT : Direction.NEUTRAL;
 			break;
-		case KeyEvent.VK_D:
 		case KeyEvent.VK_RIGHT:
 			cmdRight = false;
 			direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
