@@ -42,7 +42,7 @@ public class Game extends JPanel implements KeyListener {
 		objects.add(cannon);
 
 		//cannon.addShape(new Rectangle2D.Double(30, 40, 100, 20));
-		cannon.addShape(new Rectangle2D.Double(40, -30, 20, 100)).color(
+		cannon.addShape(new Rectangle2D.Double(30, 40, 100, 20)).color(
 				new Color(0x60, 0x7D, 0x8B));
 
 		Double[] center = cannon.addShape(new Ellipse2D.Double(0, 0, 100, 100)).color(new Color(0x9E, 0x9E, 0x9E))
@@ -51,6 +51,7 @@ public class Game extends JPanel implements KeyListener {
 		cannon.setCenter(center);
 
 		cannon.getTransform().translate(590, 660);
+		cannon.setRotation(-Math.PI / 2);
 	}
 
 	@Override
@@ -84,8 +85,7 @@ public class Game extends JPanel implements KeyListener {
 					center[0] + cannon.getTransform().getTranslateX(),
 					center[1] + cannon.getTransform().getTranslateY() };
 
-			objects.addFirst(new LaserBeam(cannon.getRotation() - Math.PI / 2,
-					position));
+			objects.addFirst(new LaserBeam(cannon.getRotation(), position));
 			timeLastShot = System.currentTimeMillis();
 		}
 
