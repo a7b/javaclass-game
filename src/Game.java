@@ -70,6 +70,12 @@ public class Game extends JPanel implements KeyListener {
 	public void tick() {
 		// decay laser beam
 		objects.removeIf(o -> o instanceof LaserBeam && ((LaserBeam) o).dead());
+		// travel laser beam
+		objects.forEach(o -> {
+			if (o instanceof LaserBeam) {
+				((LaserBeam) o).update();
+			}
+		});
 
 		if (direction == Direction.LEFT) {
 			cannon.rotate(-Math.PI/ Context.TICK);
