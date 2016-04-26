@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 
@@ -12,8 +13,8 @@ public class LaserBeam extends WorldObject {
 	}
 	
 	public LaserBeam(double radians, Double[] center) {
-		addShape(new Rectangle2D.Double(635, 10, 10, 720)).color(Color.GREEN).center(center);
-		transform.rotate(radians);
-		//transform.rotate(Math.PI);
+		AffineTransform at = AffineTransform.getTranslateInstance(center[0], center[1]);
+		at.rotate(radians);
+		addShape(new Rectangle2D.Double(0, -5, 720, 10)).color(Color.GREEN).transform(at);
 	}
 }

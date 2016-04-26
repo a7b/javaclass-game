@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
+import java.util.ArrayDeque;
 
 import javax.swing.JPanel;
 
@@ -14,7 +14,7 @@ public class Game extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 469989049178129651L;
 
-	public ArrayList<WorldObject> objects;
+	public ArrayDeque<WorldObject> objects;
 
 	private Context ctx;
 
@@ -30,7 +30,7 @@ public class Game extends JPanel implements KeyListener {
 		cmdRight = false;
 		direction = Direction.NEUTRAL;
 
-		objects = new ArrayList<>();
+		objects = new ArrayDeque<>();
 		cannon = new WorldObject();
 
 		objects.add(cannon);
@@ -86,9 +86,9 @@ public class Game extends JPanel implements KeyListener {
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if (!this.isVisible()) {
-			return;
-		}
+		// if (!this.isVisible()) {
+		// return;
+		// }
 	}
 
 	@Override
@@ -108,7 +108,12 @@ public class Game extends JPanel implements KeyListener {
 			direction = Direction.RIGHT;
 			break;
 		case KeyEvent.VK_SPACE:
-			objects.add(new LaserBeam(cannon.getRotation(), cannon.getCenter()));
+			Double[] center = cannon.getCenter();
+			// Don't mutate center
+			Double[] position = { center[0] + cannon.getTransform().getTranslateX(),
+					center[1] + cannon.getTransform().getTranslateY() };
+
+			objects.addFirst(new LaserBeam(cannon.getRotation() - Math.PI / 2, position));
 			break;
 		}
 	}
