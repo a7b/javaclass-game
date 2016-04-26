@@ -42,6 +42,7 @@ public class Game extends JPanel implements KeyListener {
 	private Direction direction;
 	
 	private String word;
+	private int wordWidth;
 	private BufferedReader reader;
 	private double[] wordCoordinates;
 
@@ -56,7 +57,6 @@ public class Game extends JPanel implements KeyListener {
 		cannon = new WorldObject();
 
 		setLayout(new BorderLayout());
-		setBackground(Color.WHITE);
 
 		objects.add(cannon);
 
@@ -83,6 +83,7 @@ public class Game extends JPanel implements KeyListener {
 		wordPanel.setPreferredSize(new Dimension(1280, WORD_DISPLAY_HEIGHT));
 		add(wordPanel, BorderLayout.SOUTH);
 		wordPanel.add(wordDisplay);
+		wordPanel.setBackground(Color.WHITE);
 	}
 
 	@Override
@@ -99,6 +100,8 @@ public class Game extends JPanel implements KeyListener {
 		
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 69));
+		// get the width
+		wordWidth = g.getFontMetrics().stringWidth(word);
 		g.drawString(word, (int) wordCoordinates[0], (int) wordCoordinates[1]);
 	}
 
@@ -148,9 +151,10 @@ public class Game extends JPanel implements KeyListener {
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// if (!this.isVisible()) {
-		// return;
-		// }
+		if (!this.isVisible()) {
+			return;
+		}
+		System.out.println(e.getKeyChar());
 	}
 
 	@Override
