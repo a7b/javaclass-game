@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 
 public class Context {
 
@@ -124,7 +126,7 @@ public class Context {
 			return this;
 		}
 
-	    public Context create() {
+	    public Context create() throws IOException {
 	        if (w == null) {
 	            w = new Window();
 	        }

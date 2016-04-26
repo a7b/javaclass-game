@@ -3,6 +3,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -34,7 +35,12 @@ public class Window {
 		contentPane = frame.getContentPane();
 		contentPane.setLayout(layout);
 
-		this.ctx = new Context.Factory().setWindow(this).create();
+		try {
+			this.ctx = new Context.Factory().setWindow(this).create();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 
 		this.timer = new Timer(1000 / Context.TICK, ctx.getTicker());
 

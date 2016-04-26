@@ -4,10 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayDeque;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Game extends JPanel implements KeyListener {
@@ -28,8 +33,12 @@ public class Game extends JPanel implements KeyListener {
 	private long timeLastShot;
 
 	private Direction direction;
+	
+	private String word = "";
+	private BufferedReader reader;
+	private int [] wordCoordinates = {600, 0};
 
-	Game() {
+	Game() throws IOException {
 		cmdLeft = false;
 		cmdRight = false;
 		timeLastShot = 0;
@@ -50,8 +59,8 @@ public class Game extends JPanel implements KeyListener {
 		cannon.setCenter(center);
 
 		cannon.getTransform().translate(590, 660);
-
-
+		
+		reader = new BufferedReader(new FileReader("/usr/share/dict/words"));
 	}
 
 	@Override
@@ -65,6 +74,8 @@ public class Game extends JPanel implements KeyListener {
 		objects.forEach((o) -> {
 			o.render(g);
 		});
+
+		g.drawString(word, wordCoordinates[0], wordCoordinates[1]);
 	}
 
 	public void tick() {
@@ -144,6 +155,13 @@ public class Game extends JPanel implements KeyListener {
 			direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
 			break;
 		}
+	}
+	
+	public void newWord() throws IOException{
+		word = reader.readLine();
+	}
+	public void updateWord(){
+		wordCoordinates[1]+=5;
 	}
 
 	private enum Direction {
