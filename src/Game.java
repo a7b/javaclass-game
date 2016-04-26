@@ -1,4 +1,6 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -8,6 +10,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayDeque;
 
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Game extends JPanel implements KeyListener {
@@ -15,10 +19,13 @@ public class Game extends JPanel implements KeyListener {
 	private static final long serialVersionUID = 469989049178129651L;
 
 	protected static final int LASER_COOLDOWN = 200;
+	protected static final int WORD_DISPLAY_HEIGHT = 40;
 
 	public ArrayDeque<WorldObject> objects;
 
 	private Context ctx;
+
+	private JLabel wordDisplay;
 
 	private WorldObject cannon;
 
@@ -35,9 +42,13 @@ public class Game extends JPanel implements KeyListener {
 		cmdRight = false;
 		timeLastShot = 0;
 		direction = Direction.NEUTRAL;
+		wordDisplay = new JLabel();
 
 		objects = new ArrayDeque<>();
 		cannon = new WorldObject();
+
+		setLayout(new BorderLayout());
+		setBackground(Color.WHITE);
 
 		objects.add(cannon);
 
@@ -50,8 +61,14 @@ public class Game extends JPanel implements KeyListener {
 
 		cannon.setCenter(center);
 
-		cannon.getTransform().translate(590, 660);
+		cannon.getTransform().translate(590, 660 - WORD_DISPLAY_HEIGHT);
 		cannon.setRotation(-Math.PI / 2);
+
+		JPanel wordPanel = new JPanel();
+		wordPanel.setLayout(new BoxLayout(wordPanel, BoxLayout.X_AXIS));
+		wordPanel.setPreferredSize(new Dimension(1280, WORD_DISPLAY_HEIGHT));
+		add(wordPanel, BorderLayout.SOUTH);
+		wordPanel.add(wordDisplay);
 	}
 
 	@Override
