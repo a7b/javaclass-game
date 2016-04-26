@@ -1,10 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-<<<<<<< HEAD
-import java.awt.Font;
-=======
 import java.awt.Dimension;
->>>>>>> 1ed29df1762cdbe5eaf3ba2500f71eeabe152d29
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -16,12 +13,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
-<<<<<<< HEAD
-=======
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
->>>>>>> 1ed29df1762cdbe5eaf3ba2500f71eeabe152d29
 import javax.swing.JPanel;
 
 public class Game extends JPanel implements KeyListener {
