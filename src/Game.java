@@ -19,7 +19,7 @@ public class Game extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 469989049178129651L;
 
-	protected static final int LASER_COOLDOWN = 500;
+	protected static final int LASER_COOLDOWN = 200;
 
 	public ArrayDeque<WorldObject> objects;
 
@@ -29,6 +29,7 @@ public class Game extends JPanel implements KeyListener {
 
 	private boolean cmdLeft;
 	private boolean cmdRight;
+	private boolean cmdShoot;
 
 	private long timeLastShot;
 
@@ -50,7 +51,7 @@ public class Game extends JPanel implements KeyListener {
 		objects.add(cannon);
 
 		//cannon.addShape(new Rectangle2D.Double(30, 40, 100, 20));
-		cannon.addShape(new Rectangle2D.Double(40, -30, 20, 100)).color(
+		cannon.addShape(new Rectangle2D.Double(30, 40, 100, 20)).color(
 				new Color(0x60, 0x7D, 0x8B));
 
 		Double[] center = cannon.addShape(new Ellipse2D.Double(0, 0, 100, 100)).color(new Color(0x9E, 0x9E, 0x9E))
@@ -59,8 +60,8 @@ public class Game extends JPanel implements KeyListener {
 		cannon.setCenter(center);
 
 		cannon.getTransform().translate(590, 660);
-		
 		reader = new BufferedReader(new FileReader("/usr/share/dict/words"));
+		cannon.setRotation(-Math.PI / 2);
 	}
 
 	@Override
@@ -81,10 +82,28 @@ public class Game extends JPanel implements KeyListener {
 	public void tick() {
 		// decay laser beam
 		objects.removeIf(o -> o instanceof LaserBeam && ((LaserBeam) o).dead());
+		// travel laser beam
+		objects.forEach(o -> {
+			if (o instanceof LaserBeam) {
+				((LaserBeam) o).update();
+			}
+		});
 
-		if (direction == Direction.LEFT) {
+		if (cmdShoot
+				&& System.currentTimeMillis() - timeLastShot > LASER_COOLDOWN) {
+			Double[] center = cannon.getCenter();
+			// Don't mutate center
+			Double[] position = {
+					center[0] + cannon.getTransform().getTranslateX(),
+					center[1] + cannon.getTransform().getTranslateY() };
+
+			objects.addFirst(new LaserBeam(cannon.getRotation(), position));
+			timeLastShot = System.currentTimeMillis();
+		}
+
+		if (direction == Direction.LEFT && cannon.getRotation() > -Math.PI) {
 			cannon.rotate(-Math.PI/ Context.TICK);
-		} else if (direction == Direction.RIGHT) {
+		} else if (direction == Direction.RIGHT && cannon.getRotation() < 0) {
 			cannon.rotate(Math.PI/ Context.TICK);
 		}
 
@@ -114,26 +133,16 @@ public class Game extends JPanel implements KeyListener {
 			return;
 		}
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_A:
 		case KeyEvent.VK_LEFT:
 			cmdLeft = true;
 			direction = Direction.LEFT;
 			break;
-		case KeyEvent.VK_D:
 		case KeyEvent.VK_RIGHT:
 			cmdRight = true;
 			direction = Direction.RIGHT;
 			break;
 		case KeyEvent.VK_SPACE:
-			if (System.currentTimeMillis() - timeLastShot > LASER_COOLDOWN) {
-				Double[] center = cannon.getCenter();
-				// Don't mutate center
-				Double[] position = { center[0] + cannon.getTransform().getTranslateX(),
-						center[1] + cannon.getTransform().getTranslateY() };
-
-				objects.addFirst(new LaserBeam(cannon.getRotation() - Math.PI / 2, position));
-				timeLastShot = System.currentTimeMillis();
-			}
+			cmdShoot = true;
 			break;
 		}
 	}
@@ -144,15 +153,16 @@ public class Game extends JPanel implements KeyListener {
 			return;
 		}
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_A:
 		case KeyEvent.VK_LEFT:
 			cmdLeft = false;
 			direction = cmdRight ? Direction.RIGHT : Direction.NEUTRAL;
 			break;
-		case KeyEvent.VK_D:
 		case KeyEvent.VK_RIGHT:
 			cmdRight = false;
 			direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
+			break;
+		case KeyEvent.VK_SPACE:
+			cmdShoot = false;
 			break;
 		}
 	}
