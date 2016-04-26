@@ -14,7 +14,7 @@ public class Game extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 469989049178129651L;
 
-	protected static final int LASER_COOLDOWN = 500;
+	protected static final int LASER_COOLDOWN = 200;
 
 	public ArrayDeque<WorldObject> objects;
 
@@ -24,6 +24,7 @@ public class Game extends JPanel implements KeyListener {
 
 	private boolean cmdLeft;
 	private boolean cmdRight;
+	private boolean cmdShoot;
 
 	private long timeLastShot;
 
@@ -50,8 +51,6 @@ public class Game extends JPanel implements KeyListener {
 		cannon.setCenter(center);
 
 		cannon.getTransform().translate(590, 660);
-
-
 	}
 
 	@Override
@@ -76,6 +75,19 @@ public class Game extends JPanel implements KeyListener {
 				((LaserBeam) o).update();
 			}
 		});
+
+		if (cmdShoot
+				&& System.currentTimeMillis() - timeLastShot > LASER_COOLDOWN) {
+			Double[] center = cannon.getCenter();
+			// Don't mutate center
+			Double[] position = {
+					center[0] + cannon.getTransform().getTranslateX(),
+					center[1] + cannon.getTransform().getTranslateY() };
+
+			objects.addFirst(new LaserBeam(cannon.getRotation() - Math.PI / 2,
+					position));
+			timeLastShot = System.currentTimeMillis();
+		}
 
 		if (direction == Direction.LEFT) {
 			cannon.rotate(-Math.PI/ Context.TICK);
@@ -120,15 +132,7 @@ public class Game extends JPanel implements KeyListener {
 			direction = Direction.RIGHT;
 			break;
 		case KeyEvent.VK_SPACE:
-			if (System.currentTimeMillis() - timeLastShot > LASER_COOLDOWN) {
-				Double[] center = cannon.getCenter();
-				// Don't mutate center
-				Double[] position = { center[0] + cannon.getTransform().getTranslateX(),
-						center[1] + cannon.getTransform().getTranslateY() };
-
-				objects.addFirst(new LaserBeam(cannon.getRotation() - Math.PI / 2, position));
-				timeLastShot = System.currentTimeMillis();
-			}
+			cmdShoot = true;
 			break;
 		}
 	}
@@ -148,6 +152,9 @@ public class Game extends JPanel implements KeyListener {
 		case KeyEvent.VK_RIGHT:
 			cmdRight = false;
 			direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
+			break;
+		case KeyEvent.VK_SPACE:
+			cmdShoot = false;
 			break;
 		}
 	}
