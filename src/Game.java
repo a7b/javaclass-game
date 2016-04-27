@@ -110,7 +110,7 @@ public class Game extends JPanel implements KeyListener {
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 69));
 		// get the width
 		FontMetrics metrics = g.getFontMetrics();
-		wordDim = new Dimension(metrics.stringWidth(word), metrics.getHeight());
+		wordDim = new Dimension(metrics.stringWidth(word), metrics.getMaxAscent() - metrics.getMaxDescent());
 		g.drawString(word, (int) wordCoordinates[0], (int) wordCoordinates[1]);
 	}
 
