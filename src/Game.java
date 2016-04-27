@@ -45,12 +45,12 @@ public class Game extends JPanel implements KeyListener {
 	private Direction direction;
 	
 	private String word;
-	private Dimension wordDim;
+	private Rectangle2D wordBounds;
 	private BufferedReader reader;
 	
 	private ImageIcon i = new ImageIcon("src/background.jpg");
 	private Image background = i.getImage();
-	private double[] wordCoordinates;
+	private double[] wordLoc;
 
 	Game() throws IOException {
 		cmdLeft = false;
@@ -78,7 +78,7 @@ public class Game extends JPanel implements KeyListener {
 		cannon.getTransform().translate(590, 660 - WORD_DISPLAY_HEIGHT);
 		cannon.setRotation(-Math.PI / 2);
 
-		wordCoordinates = new double[] { (int) (Math.random() * 1200) + 1, 0 };
+		wordLoc = new double[] { (int) (Math.random() * 1200) + 1, 0 };
 
 		reader = new BufferedReader(new FileReader("/usr/share/dict/words"));
 		
@@ -110,14 +110,17 @@ public class Game extends JPanel implements KeyListener {
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 69));
 		// get the width
 		FontMetrics metrics = g.getFontMetrics();
-		wordDim = new Dimension(metrics.stringWidth(word), metrics.getMaxAscent() - metrics.getMaxDescent());
-		g.drawString(word, (int) wordCoordinates[0], (int) wordCoordinates[1]);
+		wordBounds = new Rectangle2D.Double(wordLoc[0], wordLoc[1],
+				metrics.stringWidth(word),
+				metrics.getMaxAscent() - metrics.getMaxDescent());
+		g.drawString(word, (int) wordLoc[0], (int) wordLoc[1]);
 	}
 
 	public void tick() throws IOException {
 		if (!this.isVisible()) {
 			return;
 		}
+
 
 		// decay laser beam
 		objects.removeIf(o -> o instanceof LaserBeam && ((LaserBeam) o).dead());
@@ -127,6 +130,7 @@ public class Game extends JPanel implements KeyListener {
 				((LaserBeam) o).update();
 			}
 		});
+
 		// update cannon
 		if (direction == Direction.LEFT && cannon.getRotation() > -Math.PI) {
 			cannon.rotate(-Math.PI / Context.TICK);
@@ -148,11 +152,11 @@ public class Game extends JPanel implements KeyListener {
 		}
 		// move the word
 
-		wordCoordinates[1] += 100 / Context.TICK;
-		if (wordCoordinates[1] > 720 + 69) {
+		wordLoc[1] += 100 / Context.TICK;
+		if (wordLoc[1] > 720 + 69) {
 			newWord();
-			wordCoordinates[0] = (int) (Math.random() * 1200) + 1;
-			wordCoordinates[1] = 0;
+			wordLoc[0] = (int) (Math.random() * 1200) + 1;
+			wordLoc[1] = 0;
 		}
 
 		repaint();
