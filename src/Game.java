@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
@@ -127,7 +128,14 @@ public class Game extends JPanel implements KeyListener {
 		// travel laser beam
 		objects.forEach(o -> {
 			if (o instanceof LaserBeam) {
-				((LaserBeam) o).update();
+				LaserBeam laser = (LaserBeam) o;
+				laser.update();
+				laser.renderMesh(0);
+				if (wordBounds.intersects((Rectangle2D) laser.lastShape()) == true){
+					System.out.println("Triggered");
+				}
+				//wordBounds.intersects(laser.center[0], laser.center[1], 100, 10)
+				
 			}
 		});
 
