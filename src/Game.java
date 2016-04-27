@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -44,7 +45,7 @@ public class Game extends JPanel implements KeyListener {
 	private Direction direction;
 	
 	private String word;
-	private int wordWidth;
+	private Dimension wordDim;
 	private BufferedReader reader;
 	
 	private ImageIcon i = new ImageIcon("src/background.jpg");
@@ -108,7 +109,8 @@ public class Game extends JPanel implements KeyListener {
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 69));
 		// get the width
-		wordWidth = g.getFontMetrics().stringWidth(word);
+		FontMetrics metrics = g.getFontMetrics();
+		wordDim = new Dimension(metrics.stringWidth(word), metrics.getHeight());
 		g.drawString(word, (int) wordCoordinates[0], (int) wordCoordinates[1]);
 	}
 
@@ -116,6 +118,7 @@ public class Game extends JPanel implements KeyListener {
 		if (!this.isVisible()) {
 			return;
 		}
+
 		// decay laser beam
 		objects.removeIf(o -> o instanceof LaserBeam && ((LaserBeam) o).dead());
 		// travel laser beam
@@ -124,7 +127,14 @@ public class Game extends JPanel implements KeyListener {
 				((LaserBeam) o).update();
 			}
 		});
+		// update cannon
+		if (direction == Direction.LEFT && cannon.getRotation() > -Math.PI) {
+			cannon.rotate(-Math.PI / Context.TICK);
+		} else if (direction == Direction.RIGHT && cannon.getRotation() < 0) {
+			cannon.rotate(Math.PI / Context.TICK);
+		}
 
+		// Create shot
 		if (cmdShoot
 				&& System.currentTimeMillis() - timeLastShot > LASER_COOLDOWN) {
 			Double[] center = cannon.getCenter();
@@ -136,16 +146,20 @@ public class Game extends JPanel implements KeyListener {
 			objects.addFirst(new LaserBeam(cannon.getRotation(), position));
 			timeLastShot = System.currentTimeMillis();
 		}
+		// move the word
 
-		if (direction == Direction.LEFT && cannon.getRotation() > -Math.PI) {
-			cannon.rotate(-Math.PI/ Context.TICK);
-		} else if (direction == Direction.RIGHT && cannon.getRotation() < 0) {
-			cannon.rotate(Math.PI/ Context.TICK);
+		wordCoordinates[1] += 1;
+		if (wordCoordinates[1] > 720 + 69) {
+			newWord();
+			wordCoordinates[0] = (int) (Math.random() * 1200) + 1;
+			wordCoordinates[1] = 0;
 		}
 
-		updateWord();
-
 		repaint();
+	}
+
+	public void newWord() throws IOException {
+		word = reader.readLine();
 	}
 
 	public Context getContext() {
@@ -201,18 +215,6 @@ public class Game extends JPanel implements KeyListener {
 		case KeyEvent.VK_SPACE:
 			cmdShoot = false;
 			break;
-		}
-	}
-	
-	public void newWord() throws IOException{
-		word = reader.readLine();
-	}
-	public void updateWord() throws IOException{
-		wordCoordinates[1]+=1;
-		if (wordCoordinates[1] > 720+69){
-			newWord();
-			wordCoordinates[0] = (int)(Math.random()*1200)+1;
-			wordCoordinates[1] = 0;
 		}
 	}
 
