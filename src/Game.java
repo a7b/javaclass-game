@@ -148,7 +148,7 @@ public class Game extends JPanel implements KeyListener {
 		}
 		// move the word
 
-		wordCoordinates[1] += 1;
+		wordCoordinates[1] += 100 / Context.TICK;
 		if (wordCoordinates[1] > 720 + 69) {
 			newWord();
 			wordCoordinates[0] = (int) (Math.random() * 1200) + 1;
