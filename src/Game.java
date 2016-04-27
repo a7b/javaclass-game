@@ -160,6 +160,8 @@ public class Game extends JPanel implements KeyListener {
 
 	public void newWord() throws IOException {
 		word = reader.readLine();
+		int n = (int) (Math.random() * 100)+1;
+		
 	}
 
 	public Context getContext() {
