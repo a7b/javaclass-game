@@ -60,6 +60,7 @@ public class Game extends JPanel implements KeyListener {
 	private double[] wordLoc;
 	
 	private int points;
+	private int livesLeft;
 
 	Game() throws IOException {
 		rng = new Random();
@@ -106,6 +107,7 @@ public class Game extends JPanel implements KeyListener {
 		wordPanel.setBackground(Color.WHITE);
 		
 		points = 0;
+		livesLeft = 3;
 	}
 
 	@Override
@@ -131,6 +133,7 @@ public class Game extends JPanel implements KeyListener {
 		g.drawString(word, (int) wordLoc[0], (int) wordLoc[1]);
 		
 		g.drawString(Integer.toString(points), 10, 60);
+		g.drawString(Integer.toString(livesLeft), 1240, 60);
 	}
 
 	public void tick() throws IOException {
@@ -184,6 +187,7 @@ public class Game extends JPanel implements KeyListener {
 		wordLoc[1] += 100 / Context.TICK;
 		if (wordLoc[1] > 720 + 69) {
 			newWord();
+			livesLeft--;
 		}
 
 		repaint();
