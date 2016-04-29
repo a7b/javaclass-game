@@ -7,15 +7,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -33,6 +34,8 @@ public class Game extends JPanel implements KeyListener {
 
 	private Context ctx;
 
+	private Random rng;
+
 	private JLabel wordDisplay;
 
 	private WorldObject cannon;
@@ -47,13 +50,15 @@ public class Game extends JPanel implements KeyListener {
 	
 	private String word;
 	private Rectangle2D wordBounds;
-	private BufferedReader reader;
+	private File dictionary;
 	
 	private ImageIcon i = new ImageIcon("src/background.jpg");
 	private Image background = i.getImage();
 	private double[] wordLoc;
 
 	Game() throws IOException {
+		rng = new Random();
+
 		cmdLeft = false;
 		cmdRight = false;
 		timeLastShot = 0;
@@ -81,7 +86,7 @@ public class Game extends JPanel implements KeyListener {
 
 		wordLoc = new double[] { (int) (Math.random() * 1200) + 1, 0 };
 
-		reader = new BufferedReader(new FileReader("/usr/share/dict/words"));
+		dictionary = new File("/usr/share/dict/words");
 		
 		newWord();
 
@@ -171,9 +176,18 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void newWord() throws IOException {
-		word = reader.readLine();
-		int n = (int) (Math.random() * 100)+1;
-		
+		// resevoir sampling algorithm, the nth line has 1/n chance to replace
+		// the last line
+		int lineno = 1; // offset by one for the rng
+		for (BufferedReader reader = new BufferedReader(new FileReader(
+				dictionary)); reader.ready(); lineno++) {
+			// scroll a line
+			String line = reader.readLine();
+			// roll the dice
+			if (rng.nextInt(lineno) == 0) {
+				word = line;
+			}
+		}
 	}
 
 	public Context getContext() {
