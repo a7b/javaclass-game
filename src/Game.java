@@ -18,7 +18,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Random;
-
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -147,8 +146,12 @@ public class Game extends JPanel implements KeyListener {
 						- wordMetrics.getMaxDescent());
 		g.drawString(word, (int) wordLoc[0], (int) wordLoc[1]);
 		
-		g.drawString(Integer.toString(points), 10, 60);
-		g.drawString(Integer.toString(livesLeft), 1240, 60);
+		Font f = new Font(Font.MONOSPACED, Font.PLAIN, 30);
+		
+		g.setFont(f);
+		
+		g.drawString("Points: " + Integer.toString(points), 10, 45);
+		g.drawString("Lives: " + Integer.toString(livesLeft), 1110, 45);
 	}
 
 	public void tick() throws IOException {
@@ -165,7 +168,6 @@ public class Game extends JPanel implements KeyListener {
 				LaserBeam laser = (LaserBeam) o;
 				laser.update();
 				if (laser.renderMesh(0).intersects(wordBounds)){
-					System.out.println("Triggered");
 					try {
 						newWord();
 					} catch (Exception e) {
@@ -243,7 +245,6 @@ public class Game extends JPanel implements KeyListener {
 		if (!this.isVisible()) {
 			return;
 		}
-		System.out.println(e.getKeyChar());
 	}
 
 	@Override
