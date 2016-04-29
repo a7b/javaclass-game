@@ -169,10 +169,11 @@ public class Game extends JPanel implements KeyListener {
 			if (o instanceof LaserBeam) {
 				LaserBeam laser = (LaserBeam) o;
 				laser.update();
-				if (laser.renderMesh(0).intersects(wordBounds)){
+				if (guess.trim().equalsIgnoreCase(word.trim())
+						&& laser.renderMesh(0).intersects(wordBounds)) {
 					try {
 						newWord();
-					} catch (Exception e) {
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					points++;
@@ -215,6 +216,7 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void newWord() throws IOException {
+		setGuess("");
 		// resevoir sampling algorithm, the nth line has 1/n chance to replace
 		// the last line
 		int lineno = 1; // offset by one for the rng
@@ -227,7 +229,6 @@ public class Game extends JPanel implements KeyListener {
 				word = line;
 			}
 		}
-		int n = (int) (Math.random() * 100)+1;
 		// clamp
 		wordLoc[0] = (int) (Math.random() * (1280 - wordMetrics
 				.stringWidth(word)));
@@ -275,8 +276,11 @@ public class Game extends JPanel implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			cmdShoot = true;
 			break;
+		// retry
 		case KeyEvent.VK_BACK_SPACE:
-			if (guess.length() > 0) {
+			if (e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK) {
+				setGuess("");
+			} else if (guess.length() > 0) {
 				setGuess(guess.substring(0, guess.length() - 1));
 			}
 			break;
