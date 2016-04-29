@@ -52,6 +52,8 @@ public class Game extends JPanel implements KeyListener {
 	private ImageIcon i = new ImageIcon("src/background.jpg");
 	private Image background = i.getImage();
 	private double[] wordLoc;
+	
+	private int points;
 
 	Game() throws IOException {
 		cmdLeft = false;
@@ -91,6 +93,8 @@ public class Game extends JPanel implements KeyListener {
 		add(wordPanel, BorderLayout.SOUTH);
 		wordPanel.add(wordDisplay);
 		wordPanel.setBackground(Color.WHITE);
+		
+		points = 0;
 	}
 
 	@Override
@@ -115,6 +119,8 @@ public class Game extends JPanel implements KeyListener {
 				metrics.stringWidth(word),
 				metrics.getMaxAscent() - metrics.getMaxDescent());
 		g.drawString(word, (int) wordLoc[0], (int) wordLoc[1]);
+		
+		g.drawString(Integer.toString(points), 10, 60);
 	}
 
 	public void tick() throws IOException {
@@ -137,6 +143,7 @@ public class Game extends JPanel implements KeyListener {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					points++;
 				}
 				//wordBounds.intersects(laser.center[0], laser.center[1], 100, 10)
 				
