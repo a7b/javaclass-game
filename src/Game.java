@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Random;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -77,6 +78,8 @@ public class Game extends JPanel implements KeyListener {
 		wordDisplayHeight = guessMetrics.getMaxAscent()
 				- guessMetrics.getMaxDescent() + 20;
 
+		guess = "";
+
 		cmdLeft = false;
 		cmdRight = false;
 		timeLastShot = 0;
@@ -116,7 +119,6 @@ public class Game extends JPanel implements KeyListener {
 
 		wordDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
 		wordDisplay.setFont(guessFont);
-		wordDisplay.setText("asdf");
 
 		add(wordPanel, BorderLayout.SOUTH);
 
@@ -232,6 +234,11 @@ public class Game extends JPanel implements KeyListener {
 		wordLoc[1] = 0;
 	}
 
+	public void setGuess(String guess) {
+		this.guess = guess;
+		wordDisplay.setText(guess);
+	}
+
 	public Context getContext() {
 		return ctx;
 	}
@@ -244,6 +251,10 @@ public class Game extends JPanel implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 		if (!this.isVisible()) {
 			return;
+		}
+		String letter = String.valueOf(e.getKeyChar());
+		if (letter.matches("[A-Za-z0-9-]+")) {
+			setGuess(guess + letter);
 		}
 	}
 
@@ -261,8 +272,17 @@ public class Game extends JPanel implements KeyListener {
 			cmdRight = true;
 			direction = Direction.RIGHT;
 			break;
-		case KeyEvent.VK_SPACE:
+		case KeyEvent.VK_ENTER:
 			cmdShoot = true;
+			break;
+		case KeyEvent.VK_BACK_SPACE:
+			if (guess.length() > 0) {
+				setGuess(guess.substring(0, guess.length() - 1));
+			}
+			break;
+		// retry
+		case KeyEvent.VK_TAB:
+			setGuess("");
 			break;
 		}
 	}
@@ -281,7 +301,7 @@ public class Game extends JPanel implements KeyListener {
 			cmdRight = false;
 			direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
 			break;
-		case KeyEvent.VK_SPACE:
+		case KeyEvent.VK_ENTER:
 			cmdShoot = false;
 			break;
 		}
