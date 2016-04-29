@@ -287,6 +287,12 @@ public class Game extends JPanel implements KeyListener {
 				setGuess(guess.substring(0, guess.length() - 1));
 			}
 			break;
+		// retry
+		case KeyEvent.VK_TAB:
+			setGuess("");
+			break;
+		case KeyEvent.VK_PERIOD:
+			break;
 		}
 	}
 
