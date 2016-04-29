@@ -35,6 +35,7 @@ public class Instructions extends JPanel implements ActionListener{
 						+ "If the laser collides with the same word as the word that is typed in the box, you get a point,<br>"
 						+ " and the word disappears<br>"
 						+ "If a word reaches the bottom of the screen before it is destroyed, you will lose a life<br>"
+						+ "You can ignore casing<br>"
 						+ "Stay alive for as long as possible!<br>"
 						+ "</html>");
 		add(instructionsLabel);

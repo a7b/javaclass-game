@@ -51,7 +51,7 @@ public class Window {
 
 		contentPane.add(ctx.getInstructions());
 		layout.addLayoutComponent(ctx.getInstructions(), "instructions");
-
+		
 		layout.show(contentPane, "main-menu");
 		// l.show(f.getContentPane(), "game");
 
@@ -96,6 +96,13 @@ public class Window {
 
 	public void setContext(Context ctx) {
 		this.ctx = ctx;
+	}
+	
+	public void newGame(){
+		contentPane.add(ctx.getGame());
+		layout.addLayoutComponent(ctx.getGame(), "game");
+		
+		layout.show(contentPane, "game");
 	}
 
 }
