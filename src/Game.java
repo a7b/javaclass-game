@@ -130,9 +130,13 @@ public class Game extends JPanel implements KeyListener {
 			if (o instanceof LaserBeam) {
 				LaserBeam laser = (LaserBeam) o;
 				laser.update();
-				laser.renderMesh(0);
-				if (wordBounds.intersects((Rectangle2D) laser.lastShape()) == true){
+				if (laser.renderMesh(0).intersects(wordBounds)){
 					System.out.println("Triggered");
+					try {
+						newWord();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 				//wordBounds.intersects(laser.center[0], laser.center[1], 100, 10)
 				
@@ -163,8 +167,6 @@ public class Game extends JPanel implements KeyListener {
 		wordLoc[1] += 100 / Context.TICK;
 		if (wordLoc[1] > 720 + 69) {
 			newWord();
-			wordLoc[0] = (int) (Math.random() * 1200) + 1;
-			wordLoc[1] = 0;
 		}
 
 		repaint();
@@ -173,7 +175,8 @@ public class Game extends JPanel implements KeyListener {
 	public void newWord() throws IOException {
 		word = reader.readLine();
 		int n = (int) (Math.random() * 100)+1;
-		
+		wordLoc[0] = (int) (Math.random() * 1200) + 1;
+		wordLoc[1] = 0;
 	}
 
 	public Context getContext() {
