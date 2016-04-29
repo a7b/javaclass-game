@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -51,6 +52,8 @@ public class Game extends JPanel implements KeyListener {
 	private String word;
 	private Rectangle2D wordBounds;
 	private File dictionary;
+	private Font wordFont;
+	private FontMetrics metrics;
 	
 	private ImageIcon i = new ImageIcon("src/background.jpg");
 	private Image background = i.getImage();
@@ -60,6 +63,9 @@ public class Game extends JPanel implements KeyListener {
 
 	Game() throws IOException {
 		rng = new Random();
+		wordFont = new Font("TimesRoman", Font.PLAIN, 69);
+		// hack for getting FontMetrics
+		metrics = new Canvas().getFontMetrics(wordFont);
 
 		cmdLeft = false;
 		cmdRight = false;
@@ -117,9 +123,8 @@ public class Game extends JPanel implements KeyListener {
 		});
 		
 		g.setColor(Color.BLACK);
-		g.setFont(new Font("TimesRoman", Font.PLAIN, 69));
+		g.setFont(wordFont);
 		// get the width
-		FontMetrics metrics = g.getFontMetrics();
 		wordBounds = new Rectangle2D.Double(wordLoc[0], wordLoc[1],
 				metrics.stringWidth(word),
 				metrics.getMaxAscent() - metrics.getMaxDescent());
@@ -198,7 +203,8 @@ public class Game extends JPanel implements KeyListener {
 			}
 		}
 		int n = (int) (Math.random() * 100)+1;
-		wordLoc[0] = (int) (Math.random() * 1200) + 1;
+		// clamp
+		wordLoc[0] = (int) (Math.random() * (1280 - metrics.stringWidth(word)));
 		wordLoc[1] = 0;
 	}
 
