@@ -184,6 +184,8 @@ public class Game extends JPanel implements KeyListener {
 			newWord();
 			livesLeft--;
 		}
+		
+		
 
 		repaint();
 	}
