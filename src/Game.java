@@ -55,6 +55,8 @@ public class Game extends JPanel implements KeyListener {
 	private ImageIcon i = new ImageIcon("src/background.jpg");
 	private Image background = i.getImage();
 	private double[] wordLoc;
+	
+	private int points;
 
 	Game() throws IOException {
 		rng = new Random();
@@ -96,6 +98,8 @@ public class Game extends JPanel implements KeyListener {
 		add(wordPanel, BorderLayout.SOUTH);
 		wordPanel.add(wordDisplay);
 		wordPanel.setBackground(Color.WHITE);
+		
+		points = 0;
 	}
 
 	@Override
@@ -120,6 +124,8 @@ public class Game extends JPanel implements KeyListener {
 				metrics.stringWidth(word),
 				metrics.getMaxAscent() - metrics.getMaxDescent());
 		g.drawString(word, (int) wordLoc[0], (int) wordLoc[1]);
+		
+		g.drawString(Integer.toString(points), 10, 60);
 	}
 
 	public void tick() throws IOException {
@@ -135,9 +141,14 @@ public class Game extends JPanel implements KeyListener {
 			if (o instanceof LaserBeam) {
 				LaserBeam laser = (LaserBeam) o;
 				laser.update();
-				laser.renderMesh(0);
-				if (wordBounds.intersects((Rectangle2D) laser.lastShape()) == true){
+				if (laser.renderMesh(0).intersects(wordBounds)){
 					System.out.println("Triggered");
+					try {
+						newWord();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					points++;
 				}
 				//wordBounds.intersects(laser.center[0], laser.center[1], 100, 10)
 				
@@ -168,8 +179,6 @@ public class Game extends JPanel implements KeyListener {
 		wordLoc[1] += 100 / Context.TICK;
 		if (wordLoc[1] > 720 + 69) {
 			newWord();
-			wordLoc[0] = (int) (Math.random() * 1200) + 1;
-			wordLoc[1] = 0;
 		}
 
 		repaint();
@@ -188,6 +197,9 @@ public class Game extends JPanel implements KeyListener {
 				word = line;
 			}
 		}
+		int n = (int) (Math.random() * 100)+1;
+		wordLoc[0] = (int) (Math.random() * 1200) + 1;
+		wordLoc[1] = 0;
 	}
 
 	public Context getContext() {
