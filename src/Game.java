@@ -28,6 +28,7 @@ public class Game extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 469989049178129651L;
 
+	protected static final int WORD_SPEED_HARD = 100;
 	protected static final int LASER_COOLDOWN = 200;
 
 	public ArrayDeque<WorldObject> objects;
@@ -204,8 +205,8 @@ public class Game extends JPanel implements KeyListener {
 		}
 		// move the word
 
-		wordLoc[1] += 100 / Context.TICK;
-		if (wordLoc[1] > 720 + 69) {
+		wordLoc[1] += WORD_SPEED_HARD / Context.TICK;
+		if (wordLoc[1] > 720 + wordMetrics.getHeight()) {
 			newWord();
 			livesLeft--;
 		}
