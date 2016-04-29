@@ -1,6 +1,6 @@
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -29,7 +29,6 @@ public class Game extends JPanel implements KeyListener {
 	private static final long serialVersionUID = 469989049178129651L;
 
 	protected static final int LASER_COOLDOWN = 200;
-	protected static final int WORD_DISPLAY_HEIGHT = 40;
 
 	public ArrayDeque<WorldObject> objects;
 
@@ -38,6 +37,7 @@ public class Game extends JPanel implements KeyListener {
 	private Random rng;
 
 	private JLabel wordDisplay;
+	protected int wordDisplayHeight;
 
 	private WorldObject cannon;
 
@@ -53,8 +53,11 @@ public class Game extends JPanel implements KeyListener {
 	private Rectangle2D wordBounds;
 	private File dictionary;
 	private Font wordFont;
-	private FontMetrics metrics;
+	private FontMetrics wordMetrics;
 	
+	private String guess;
+	private Font guessFont;
+
 	private ImageIcon i = new ImageIcon("src/background.jpg");
 	private Image background = i.getImage();
 	private double[] wordLoc;
@@ -65,8 +68,15 @@ public class Game extends JPanel implements KeyListener {
 	Game() throws IOException {
 		rng = new Random();
 		wordFont = new Font("TimesRoman", Font.PLAIN, 69);
+		guessFont = new Font(Font.MONOSPACED, Font.PLAIN, 48);
 		// hack for getting FontMetrics
-		metrics = new Canvas().getFontMetrics(wordFont);
+		wordMetrics = this.getFontMetrics(wordFont);
+
+		FontMetrics guessMetrics = this.getFontMetrics(guessFont);
+
+		// make the panel bigger than the word
+		wordDisplayHeight = guessMetrics.getMaxAscent()
+				- guessMetrics.getMaxDescent() + 20;
 
 		cmdLeft = false;
 		cmdRight = false;
@@ -90,7 +100,7 @@ public class Game extends JPanel implements KeyListener {
 
 		cannon.setCenter(center);
 
-		cannon.getTransform().translate(590, 660 - WORD_DISPLAY_HEIGHT);
+		cannon.getTransform().translate(590, 660 - wordDisplayHeight);
 		cannon.setRotation(-Math.PI / 2);
 
 		wordLoc = new double[] { (int) (Math.random() * 1200) + 1, 0 };
@@ -100,12 +110,17 @@ public class Game extends JPanel implements KeyListener {
 		newWord();
 
 		JPanel wordPanel = new JPanel();
-		wordPanel.setLayout(new BoxLayout(wordPanel, BoxLayout.X_AXIS));
-		wordPanel.setPreferredSize(new Dimension(1280, WORD_DISPLAY_HEIGHT));
-		add(wordPanel, BorderLayout.SOUTH);
+		wordPanel.setLayout(new BoxLayout(wordPanel, BoxLayout.Y_AXIS));
+		wordPanel.setPreferredSize(new Dimension(1280, wordDisplayHeight));
 		wordPanel.add(wordDisplay);
 		wordPanel.setBackground(Color.WHITE);
-		
+
+		wordDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
+		wordDisplay.setFont(guessFont);
+		wordDisplay.setText("asdf");
+
+		add(wordPanel, BorderLayout.SOUTH);
+
 		points = 0;
 		livesLeft = 3;
 	}
@@ -128,8 +143,8 @@ public class Game extends JPanel implements KeyListener {
 		g.setFont(wordFont);
 		// get the width
 		wordBounds = new Rectangle2D.Double(wordLoc[0], wordLoc[1],
-				metrics.stringWidth(word),
-				metrics.getMaxAscent() - metrics.getMaxDescent());
+				wordMetrics.stringWidth(word), wordMetrics.getMaxAscent()
+						- wordMetrics.getMaxDescent());
 		g.drawString(word, (int) wordLoc[0], (int) wordLoc[1]);
 		
 		g.drawString(Integer.toString(points), 10, 60);
@@ -210,7 +225,8 @@ public class Game extends JPanel implements KeyListener {
 		}
 		int n = (int) (Math.random() * 100)+1;
 		// clamp
-		wordLoc[0] = (int) (Math.random() * (1280 - metrics.stringWidth(word)));
+		wordLoc[0] = (int) (Math.random() * (1280 - wordMetrics
+				.stringWidth(word)));
 		wordLoc[1] = 0;
 	}
 
