@@ -28,10 +28,9 @@ public class Game extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 469989049178129651L;
 
-	protected static final Difficulty HARD = new Difficulty(100, 500, 20 * 1000);
-
-	protected static final int WORD_SPEED_HARD = 100;
-	protected static final int LASER_COOLDOWN = 500;
+	protected double wordSpeed;
+	protected double cannonFireRate;
+	protected double msToSpeedUp;
 
 	public ArrayDeque<WorldObject> objects;
 
@@ -93,6 +92,8 @@ public class Game extends JPanel implements KeyListener {
 		cannon = new WorldObject();
 
 		setLayout(new BorderLayout());
+
+		setDifficulty(Difficulty.NORMAL);
 
 		objects.add(cannon);
 
@@ -195,7 +196,7 @@ public class Game extends JPanel implements KeyListener {
 
 		// Create shot
 		if (cmdShoot
-				&& System.currentTimeMillis() - timeLastShot > LASER_COOLDOWN) {
+ && System.currentTimeMillis() - timeLastShot > cannonFireRate) {
 			Double[] center = cannon.getCenter();
 			// Don't mutate center
 			Double[] position = {
@@ -207,7 +208,7 @@ public class Game extends JPanel implements KeyListener {
 		}
 		// move the word
 
-		wordLoc[1] += WORD_SPEED_HARD / Context.TICK;
+		wordLoc[1] += wordSpeed / Context.TICK;
 		if (wordLoc[1] > 720 + wordMetrics.getHeight()) {
 			newWord();
 			livesLeft--;
@@ -241,6 +242,12 @@ public class Game extends JPanel implements KeyListener {
 	public void setGuess(String guess) {
 		this.guess = guess;
 		wordDisplay.setText(guess);
+	}
+
+	public void setDifficulty(Difficulty diff) {
+		this.wordSpeed = diff.getWordSpeed();
+		this.cannonFireRate = diff.getCannonFireRate();
+		this.msToSpeedUp = diff.getMsToSpeedUp();
 	}
 
 	public Context getContext() {
@@ -318,42 +325,5 @@ public class Game extends JPanel implements KeyListener {
 
 	protected static enum Direction {
 		RIGHT, NEUTRAL, LEFT
-	}
-
-	protected static class Difficulty {
-		private double wordSpeed;
-		private double cannonFireRate;
-		private int msToSpeedUp;
-
-		public Difficulty(double wordSpeed, double cannonFireRate,
-				int msToSpeedUp) {
-			this.setWordSpeed(wordSpeed);
-			this.setCannonFireRate(cannonFireRate);
-			this.setMsToSpeedUp(msToSpeedUp);
-		}
-
-		public double getWordSpeed() {
-			return wordSpeed;
-		}
-
-		public void setWordSpeed(double wordSpeed) {
-			this.wordSpeed = wordSpeed;
-		}
-
-		public double getCannonFireRate() {
-			return cannonFireRate;
-		}
-
-		public void setCannonFireRate(double cannonFireRate) {
-			this.cannonFireRate = cannonFireRate;
-		}
-
-		public int getMsToSpeedUp() {
-			return msToSpeedUp;
-		}
-
-		public void setMsToSpeedUp(int msToSpeedUp) {
-			this.msToSpeedUp = msToSpeedUp;
-		}
 	}
 }
