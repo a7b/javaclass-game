@@ -51,8 +51,6 @@ public class Game extends JPanel implements KeyListener {
 
 	private long timeLastShot;
 
-	private double speedFactor;
-	private int partSpeedFactor;
 	private double wordAccelSpeed;
 	private Direction direction;
 	
@@ -71,9 +69,6 @@ public class Game extends JPanel implements KeyListener {
 	
 	private int points;
 	private int livesLeft;
-
-	private long tickNo;
-
 	private long gameStart = System.currentTimeMillis();
 
 	Game() throws IOException {
@@ -96,10 +91,7 @@ public class Game extends JPanel implements KeyListener {
 		cmdLeft = false;
 		cmdRight = false;
 		timeLastShot = 0;
-		speedFactor = 1.0;
-		partSpeedFactor = 1;
 		wordAccelSpeed = wordSpeed;
-		tickNo = 0;
 		direction = Direction.NEUTRAL;
 		wordDisplay = new JLabel();
 
@@ -175,7 +167,6 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void tick() throws IOException {
-		tickNo++;
 		if (!this.isVisible()) {
 			return;
 		}
