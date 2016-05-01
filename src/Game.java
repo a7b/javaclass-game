@@ -27,6 +27,8 @@ import javax.swing.JPanel;
 public class Game extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 469989049178129651L;
+	// pi radians per second
+	private static final double CANNON_SPEED = 1;
 
 	protected double wordSpeed;
 	protected double cannonFireRate;
@@ -49,6 +51,9 @@ public class Game extends JPanel implements KeyListener {
 
 	private long timeLastShot;
 
+	private double speedFactor;
+	private int partSpeedFactor;
+	private double wordAccelSpeed;
 	private Direction direction;
 	
 	private String word;
@@ -67,6 +72,10 @@ public class Game extends JPanel implements KeyListener {
 	private int points;
 	private int livesLeft;
 
+	private long tickNo;
+
+	private long gameStart = System.currentTimeMillis();
+
 	Game() throws IOException {
 		rng = new Random();
 		wordFont = new Font("TimesRoman", Font.PLAIN, 69);
@@ -80,11 +89,17 @@ public class Game extends JPanel implements KeyListener {
 		wordDisplayHeight = guessMetrics.getMaxAscent()
 				- guessMetrics.getMaxDescent() + 20;
 
+		setDifficulty(Difficulty.NORMAL);
+
 		guess = "";
 
 		cmdLeft = false;
 		cmdRight = false;
 		timeLastShot = 0;
+		speedFactor = 1.0;
+		partSpeedFactor = 1;
+		wordAccelSpeed = wordSpeed;
+		tickNo = 0;
 		direction = Direction.NEUTRAL;
 		wordDisplay = new JLabel();
 
@@ -93,7 +108,6 @@ public class Game extends JPanel implements KeyListener {
 
 		setLayout(new BorderLayout());
 
-		setDifficulty(Difficulty.EXPERT);
 
 		objects.add(cannon);
 
@@ -161,10 +175,13 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void tick() throws IOException {
+		tickNo++;
 		if (!this.isVisible()) {
 			return;
 		}
 
+		wordAccelSpeed = 1 + ((((double) System.currentTimeMillis() - (double) gameStart) / msToSpeedUp) * wordSpeed
+				/ Context.TICK);
 
 		// decay laser beam
 		objects.removeIf(o -> o instanceof LaserBeam && ((LaserBeam) o).dead());
@@ -189,9 +206,9 @@ public class Game extends JPanel implements KeyListener {
 
 		// update cannon
 		if (direction == Direction.LEFT && cannon.getRotation() > -Math.PI) {
-			cannon.rotate(-Math.PI / Context.TICK);
+			cannon.rotate(CANNON_SPEED * -Math.PI / Context.TICK);
 		} else if (direction == Direction.RIGHT && cannon.getRotation() < 0) {
-			cannon.rotate(Math.PI / Context.TICK);
+			cannon.rotate(CANNON_SPEED * Math.PI / Context.TICK);
 		}
 
 		// Create shot
@@ -208,7 +225,7 @@ public class Game extends JPanel implements KeyListener {
 		}
 		// move the word
 
-		wordLoc[1] += wordSpeed / Context.TICK;
+		wordLoc[1] += wordAccelSpeed;
 		if (wordLoc[1] > 720 + wordMetrics.getHeight()) {
 			newWord();
 			livesLeft--;

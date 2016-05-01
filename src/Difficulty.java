@@ -1,7 +1,7 @@
 public class Difficulty {
-	public static final Difficulty EASY = new Difficulty(32, 128, 60 * 1000, true);
-	public static final Difficulty NORMAL = new Difficulty(64, 512, 30 * 1000, true);
-	public static final Difficulty EXPERT = new Difficulty(128, 2048, 15 * 1000, false);
+	public static final Difficulty EASY = new Difficulty(32, 128, 360 * 1000, true);
+	public static final Difficulty NORMAL = new Difficulty(64, 512, 180 * 1000, true);
+	public static final Difficulty EXPERT = new Difficulty(128, 2048, 90 * 1000, false);
 
 	public final double wordSpeed;
 	public final double cannonFireRate;
