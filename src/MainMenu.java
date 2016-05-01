@@ -46,6 +46,7 @@ public class MainMenu extends JPanel implements ActionListener {
 		add(Box.createVerticalStrut(20));
 		add(play);
 		add(Box.createVerticalStrut(20));
+		add(howToPlay);
 	}
 
 	@Override
