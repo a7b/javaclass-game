@@ -68,7 +68,7 @@ public class Game extends JPanel implements KeyListener {
 	private double[] wordLoc;
 	
 	private int points;
-	private int livesLeft;
+	private int lives;
 	private long gameStart = System.currentTimeMillis();
 
 	Game() throws IOException {
@@ -133,7 +133,7 @@ public class Game extends JPanel implements KeyListener {
 		add(wordPanel, BorderLayout.SOUTH);
 
 		points = 0;
-		livesLeft = 3;
+		lives = 3;
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public class Game extends JPanel implements KeyListener {
 		g.setFont(f);
 		
 		g.drawString("Points: " + Integer.toString(points), 10, 45);
-		g.drawString("Lives: " + Integer.toString(livesLeft), 1110, 45);
+		g.drawString("Lives: " + Integer.toString(lives), 1110, 45);
 	}
 
 	public void tick() throws IOException {
@@ -219,9 +219,12 @@ public class Game extends JPanel implements KeyListener {
 		wordLoc[1] += wordAccelSpeed;
 		if (wordLoc[1] > 720 + wordMetrics.getHeight()) {
 			newWord();
-			livesLeft--;
+			lives--;
 		}
 		
+		if (lives < 0) {
+			// end game
+		}
 		
 
 		repaint();
