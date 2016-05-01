@@ -93,7 +93,7 @@ public class Game extends JPanel implements KeyListener {
 
 		setLayout(new BorderLayout());
 
-		setDifficulty(Difficulty.NORMAL);
+		setDifficulty(Difficulty.EXPERT);
 
 		objects.add(cannon);
 

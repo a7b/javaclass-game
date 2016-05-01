@@ -1,41 +1,53 @@
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
 
 public class MainMenu extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -5432368345116470291L;
 
+	private static final int ITEM_WIDTH = 300;
+	private static final Font TITLE_FONT = new Font(Font.SERIF, Font.BOLD, 72);
+	private static final Font BUTTON_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
+
 	private Context ctx;
 
 	private JButton play;
 	private JButton howToPlay;
-	private SpringLayout layout;
 	
-	public MainMenu(){
-		layout = new SpringLayout();
-		setLayout(layout);
+	public MainMenu() {
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		play = new JButton("Play");
+		JLabel title = new JLabel("MRW dictionary invaders");
+		this.play = new JButton("Play");
+		this.howToPlay = new JButton("How to Play");
+
+		title.setFont(TITLE_FONT);
+		title.setAlignmentX(Component.CENTER_ALIGNMENT);
+		play.setFont(BUTTON_FONT);
+		play.setAlignmentX(Component.CENTER_ALIGNMENT);
+		play.setMaximumSize(new Dimension(ITEM_WIDTH, (int) play.getPreferredSize().getHeight()));
 		play.addActionListener(this);
-		add(play);
-		
-		howToPlay = new JButton("How to Play");
+		howToPlay.setFont(BUTTON_FONT);
+		howToPlay.setAlignmentX(Component.CENTER_ALIGNMENT);
+		howToPlay.setMaximumSize(new Dimension(ITEM_WIDTH, (int) howToPlay.getPreferredSize().getHeight()));
 		howToPlay.addActionListener(this);
-		add(howToPlay);
-		
-		layout.putConstraint(SpringLayout.WEST, play, 20, SpringLayout.WEST,
-				this);
-		layout.putConstraint(SpringLayout.NORTH, play, 20, SpringLayout.NORTH,
-				this);
-		layout.putConstraint(SpringLayout.NORTH, howToPlay, 20,
-				SpringLayout.NORTH, this);
-	    layout.putConstraint(SpringLayout.WEST, howToPlay, 20, SpringLayout.EAST, play);
+
+		add(Box.createVerticalStrut(100));
+		add(title);
+		add(Box.createVerticalStrut(20));
+		add(play);
+		add(Box.createVerticalStrut(20));
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == play){
