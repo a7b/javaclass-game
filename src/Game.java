@@ -245,9 +245,9 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void setDifficulty(Difficulty diff) {
-		this.wordSpeed = diff.getWordSpeed();
-		this.cannonFireRate = diff.getCannonFireRate();
-		this.msToSpeedUp = diff.getMsToSpeedUp();
+		this.wordSpeed = diff.wordSpeed;
+		this.cannonFireRate = diff.cannonFireRate;
+		this.msToSpeedUp = diff.msToSpeedUp;
 	}
 
 	public Context getContext() {
