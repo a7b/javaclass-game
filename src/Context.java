@@ -10,19 +10,25 @@ public class Context {
 	private Game game;
 	private MainMenu mainMenu;
 	private Instructions instructions;
+	private ChangeDifficulty changeDifficulty;
+	private GameOver gameOver;
 
-	protected Context(Window window, Ticker ticker, Game game,
-			MainMenu mainMenu, Instructions instructions) {
+	protected Context(Window window, Ticker ticker, Game game, MainMenu mainMenu, Instructions instructions,
+			ChangeDifficulty changeDifficulty, GameOver gameOver) {
         this.window = window;
         this.ticker = ticker;
         this.game = game;
 		this.mainMenu = mainMenu;
 		this.instructions = instructions;
+		this.changeDifficulty = changeDifficulty;
+		this.gameOver = gameOver;
 		this.window.setContext(this);
 		this.ticker.setContext(this);
 		this.game.setContext(this);
 		this.mainMenu.setContext(this);
 		this.instructions.setContext(this);
+		this.changeDifficulty.setContext(this);
+		this.gameOver.setContext(this);
     }
 
     public Window getWindow() {
@@ -65,12 +71,30 @@ public class Context {
 		this.instructions = instructions;
 	}
 
+	public ChangeDifficulty getChangeDifficulty() {
+		return changeDifficulty;
+	}
+
+	public void setChangeDifficulty(ChangeDifficulty changeDifficulty) {
+		this.changeDifficulty = changeDifficulty;
+	}
+
+	public GameOver getGameOver() {
+		return gameOver;
+	}
+
+	public void setGameOver(GameOver gameOver) {
+		this.gameOver = gameOver;
+	}
+
 	public static class Factory {
 	    private Window w;
 	    private Ticker t;
 	    private Game g;
 		private MainMenu mm;
 		private Instructions i;
+		private ChangeDifficulty cd;
+		private GameOver go;
 
 		public Factory() {
 			this.w = null;
@@ -78,6 +102,8 @@ public class Context {
 			this.g = null;
 			this.mm = null;
 			this.i = null;
+			this.cd = null;
+			this.go = null;
 		}
 
 	    public Window getWindow() {
@@ -126,7 +152,23 @@ public class Context {
 			return this;
 		}
 
-	    public Context create() throws IOException {
+	    public ChangeDifficulty getChangeDifficulty() {
+			return cd;
+		}
+
+		public void setChangeDifficulty(ChangeDifficulty cd) {
+			this.cd = cd;
+		}
+
+		public GameOver getGameOver() {
+			return go;
+		}
+
+		public void setGameOver(GameOver go) {
+			this.go = go;
+		}
+
+		public Context create() throws IOException {
 	        if (w == null) {
 	            w = new Window();
 	        }
@@ -142,7 +184,13 @@ public class Context {
 			if (i == null) {
 				i = new Instructions();
 			}
-			return new Context(w, t, g, mm, i);
+			if (cd == null) {
+				cd = new ChangeDifficulty();
+			}
+			if (go == null) {
+				go = new GameOver();
+			}
+			return new Context(w, t, g, mm, i, cd, go);
 	    }
 
 	}

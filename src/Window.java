@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -52,6 +53,12 @@ public class Window {
 		contentPane.add(ctx.getInstructions());
 		layout.addLayoutComponent(ctx.getInstructions(), "instructions");
 		
+		contentPane.add(ctx.getChangeDifficulty());
+		layout.addLayoutComponent(ctx.getChangeDifficulty(), "change-difficulty");
+
+		contentPane.add(ctx.getGameOver());
+		layout.addLayoutComponent(ctx.getGameOver(), "game-over");
+
 		layout.show(contentPane, "main-menu");
 		// l.show(f.getContentPane(), "game");
 

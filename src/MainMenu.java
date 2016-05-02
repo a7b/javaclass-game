@@ -21,14 +21,16 @@ public class MainMenu extends JPanel implements ActionListener {
 	private Context ctx;
 
 	private JButton play;
-	private JButton howToPlay;
+	private JButton changeDiff;
+	private JButton instructions;
 	
 	public MainMenu() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JLabel title = new JLabel("MRW dictionary invaders");
 		this.play = new JButton("Play");
-		this.howToPlay = new JButton("How to Play");
+		this.changeDiff = new JButton("Change Difficulty");
+		this.instructions = new JButton("How to Play");
 
 		title.setFont(TITLE_FONT);
 		title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -36,24 +38,32 @@ public class MainMenu extends JPanel implements ActionListener {
 		play.setAlignmentX(Component.CENTER_ALIGNMENT);
 		play.setMaximumSize(new Dimension(ITEM_WIDTH, (int) play.getPreferredSize().getHeight()));
 		play.addActionListener(this);
-		howToPlay.setFont(BUTTON_FONT);
-		howToPlay.setAlignmentX(Component.CENTER_ALIGNMENT);
-		howToPlay.setMaximumSize(new Dimension(ITEM_WIDTH, (int) howToPlay.getPreferredSize().getHeight()));
-		howToPlay.addActionListener(this);
+		changeDiff.setFont(BUTTON_FONT);
+		changeDiff.setAlignmentX(Component.CENTER_ALIGNMENT);
+		changeDiff.setMaximumSize(new Dimension(ITEM_WIDTH, (int) changeDiff.getPreferredSize().getHeight()));
+		changeDiff.addActionListener(this);
+		instructions.setFont(BUTTON_FONT);
+		instructions.setAlignmentX(Component.CENTER_ALIGNMENT);
+		instructions.setMaximumSize(new Dimension(ITEM_WIDTH, (int) instructions.getPreferredSize().getHeight()));
+		instructions.addActionListener(this);
 
 		add(Box.createVerticalStrut(100));
 		add(title);
 		add(Box.createVerticalStrut(20));
 		add(play);
 		add(Box.createVerticalStrut(20));
-		add(howToPlay);
+		add(changeDiff);
+		add(Box.createVerticalStrut(20));
+		add(instructions);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == play){
 			ctx.getWindow().show("game");
-		} else if (e.getSource() == howToPlay) {
+		} else if (e.getSource() == changeDiff) {
+			ctx.getWindow().show("change-difficulty");
+		} else if (e.getSource() == instructions) {
 			ctx.getWindow().show("instructions");
 		}
 	}
