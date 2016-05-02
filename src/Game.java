@@ -86,7 +86,6 @@ public class Game extends JPanel implements KeyListener {
 
 		setDifficulty(Difficulty.NORMAL);
 
-		guess = "";
 
 		cmdLeft = false;
 		cmdRight = false;
@@ -233,7 +232,6 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void newWord() throws IOException {
-		setGuess("");
 		// resevoir sampling algorithm, the nth line has 1/n chance to replace
 		// the last line
 		int lineno = 1; // offset by one for the rng
@@ -250,11 +248,24 @@ public class Game extends JPanel implements KeyListener {
 		wordLoc[0] = (int) (Math.random() * (1280 - wordMetrics
 				.stringWidth(word)));
 		wordLoc[1] = 0;
+		setGuess("");
 	}
 
 	public void setGuess(String guess) {
 		this.guess = guess;
 		wordDisplay.setText(guess);
+		Color guessColor;
+		if (guess.trim().equalsIgnoreCase(word.trim())) {
+			// matches
+			guessColor = Color.GREEN;
+		} else if (word.trim().toLowerCase().startsWith(guess.trim().toLowerCase())) {
+			// ok so far
+			guessColor = Color.BLACK;
+		} else {
+			// doesn't match
+			guessColor = Color.RED;
+		}
+		wordDisplay.setForeground(guessColor);
 	}
 
 	public void setDifficulty(Difficulty diff) {
