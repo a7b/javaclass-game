@@ -42,7 +42,16 @@ public class Window {
 			System.exit(1);
 		}
 
-		this.timer = new Timer(1000 / Context.TICK, ctx.getTicker());
+		this.timer = new Timer(1000 / Context.TICK, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ctx.getGame().tick();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 
 		contentPane.add(ctx.getMainMenu());
 		layout.addLayoutComponent(ctx.getMainMenu(), "main-menu");

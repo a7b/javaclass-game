@@ -6,24 +6,21 @@ public class Context {
 	public static final int TICK = 100;
 
 	private Window window;
-	private Ticker ticker;
 	private Game game;
 	private MainMenu mainMenu;
 	private Instructions instructions;
 	private ChangeDifficulty changeDifficulty;
 	private GameOver gameOver;
 
-	protected Context(Window window, Ticker ticker, Game game, MainMenu mainMenu, Instructions instructions,
+	protected Context(Window window, Game game, MainMenu mainMenu, Instructions instructions,
 			ChangeDifficulty changeDifficulty, GameOver gameOver) {
         this.window = window;
-        this.ticker = ticker;
         this.game = game;
 		this.mainMenu = mainMenu;
 		this.instructions = instructions;
 		this.changeDifficulty = changeDifficulty;
 		this.gameOver = gameOver;
 		this.window.setContext(this);
-		this.ticker.setContext(this);
 		this.game.setContext(this);
 		this.mainMenu.setContext(this);
 		this.instructions.setContext(this);
@@ -37,14 +34,6 @@ public class Context {
 
     public void setWindow(Window window) {
         this.window = window;
-    }
-
-    public Ticker getTicker() {
-        return ticker;
-    }
-
-    public void setTicker(Ticker ticker) {
-        this.ticker = ticker;
     }
 
     public Game getGame() {
@@ -89,7 +78,6 @@ public class Context {
 
 	public static class Factory {
 	    private Window w;
-	    private Ticker t;
 	    private Game g;
 		private MainMenu mm;
 		private Instructions i;
@@ -98,7 +86,6 @@ public class Context {
 
 		public Factory() {
 			this.w = null;
-			this.t = null;
 			this.g = null;
 			this.mm = null;
 			this.i = null;
@@ -113,15 +100,6 @@ public class Context {
         // allow chaining
 	    public Factory setWindow(Window w) {
 	        this.w = w;
-	        return this;
-	    }
-
-	    public Ticker getTicker() {
-	        return t;
-	    }
-
-	    public Factory setTicker(Ticker t) {
-	        this.t = t;
 	        return this;
 	    }
 
@@ -172,9 +150,6 @@ public class Context {
 	        if (w == null) {
 	            w = new Window();
 	        }
-	        if (t == null) {
-	            t = new Ticker();
-	        }
 	        if (g == null) {
 				g = new Game();
 	        }
@@ -190,7 +165,7 @@ public class Context {
 			if (go == null) {
 				go = new GameOver();
 			}
-			return new Context(w, t, g, mm, i, cd, go);
+			return new Context(w, g, mm, i, cd, go);
 	    }
 
 	}
