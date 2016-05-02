@@ -223,7 +223,9 @@ public class Game extends JPanel implements KeyListener {
 		}
 		
 		if (lives < 0) {
-			// end game
+			ctx.getGameOver().setScore(points);
+			ctx.getGameOver().setTime(System.currentTimeMillis() - gameStart);
+			ctx.getWindow().show("game-over");
 		}
 		
 
@@ -256,7 +258,6 @@ public class Game extends JPanel implements KeyListener {
 	}
 
 	public void setDifficulty(Difficulty diff) {
-		System.out.println(diff.name());
 		this.wordSpeed = diff.wordSpeed;
 		this.cannonFireRate = diff.cannonFireRate;
 		this.msToSpeedUp = diff.msToSpeedUp;
