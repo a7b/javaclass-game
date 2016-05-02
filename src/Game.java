@@ -68,7 +68,7 @@ public class Game extends JPanel implements KeyListener {
 	private Image background = i.getImage();
 	private double[] wordLoc;
 	
-	private int points;
+	private int score;
 	private int lives;
 	private long gameStart = System.currentTimeMillis();
 
@@ -132,7 +132,7 @@ public class Game extends JPanel implements KeyListener {
 
 		add(wordPanel, BorderLayout.SOUTH);
 
-		points = 0;
+		score = 0;
 		lives = 3;
 	}
 
@@ -162,7 +162,7 @@ public class Game extends JPanel implements KeyListener {
 		
 		g.setFont(f);
 		
-		g.drawString("Points: " + Integer.toString(points), 10, 45);
+		g.drawString("Points: " + Integer.toString(score), 10, 45);
 		g.drawString("Lives: " + Integer.toString(lives), 1110, 45);
 	}
 
@@ -188,7 +188,14 @@ public class Game extends JPanel implements KeyListener {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					points++;
+					// add proportional score to the distance of the word typed and the number of letters
+					// description by outer parenthetical expressions n by their
+					// weight w (n) * w:
+					// percent closest to the top as an integer
+					// word length over 10 (.56 below average length)
+					// base score
+					// more precision when converted to int
+					score += ((1.0 - (wordLoc[1] / 720.0)) * 0.2 + (word.length() / 10.0) * 0.6 + (0.2) * 0.2) * (100);
 				}
 				//wordBounds.intersects(laser.center[0], laser.center[1], 100, 10)
 				
@@ -223,7 +230,7 @@ public class Game extends JPanel implements KeyListener {
 		}
 		
 		if (lives < 0) {
-			ctx.getGameOver().setScore(points);
+			ctx.getGameOver().setScore(score);
 			ctx.getGameOver().setTime(System.currentTimeMillis() - gameStart);
 			ctx.getWindow().show("game-over");
 		}
