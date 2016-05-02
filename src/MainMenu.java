@@ -27,7 +27,7 @@ public class MainMenu extends JPanel implements ActionListener {
 	public MainMenu() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		JLabel title = new JLabel("MRW dictionary invaders");
+		JLabel title = new JLabel("Consequences of Not Learning Vocab");
 		this.play = new JButton("Play");
 		this.changeDiff = new JButton("Change Difficulty");
 		this.instructions = new JButton("How to Play");

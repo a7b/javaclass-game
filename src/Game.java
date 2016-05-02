@@ -62,6 +62,7 @@ public class Game extends JPanel implements KeyListener {
 	
 	private String guess;
 	private Font guessFont;
+	private boolean verifyGuess;
 
 	private ImageIcon i = new ImageIcon("src/background.jpg");
 	private Image background = i.getImage();
@@ -254,24 +255,27 @@ public class Game extends JPanel implements KeyListener {
 	public void setGuess(String guess) {
 		this.guess = guess;
 		wordDisplay.setText(guess);
-		Color guessColor;
-		if (guess.trim().equalsIgnoreCase(word.trim())) {
-			// matches
-			guessColor = Color.GREEN;
-		} else if (word.trim().toLowerCase().startsWith(guess.trim().toLowerCase())) {
-			// ok so far
-			guessColor = Color.BLACK;
-		} else {
-			// doesn't match
-			guessColor = Color.RED;
+		if (verifyGuess) {
+			Color guessColor;
+			if (guess.trim().equalsIgnoreCase(word.trim())) {
+				// matches
+				guessColor = Color.GREEN;
+			} else if (word.trim().toLowerCase().startsWith(guess.trim().toLowerCase())) {
+				// ok so far
+				guessColor = Color.BLACK;
+			} else {
+				// doesn't match
+				guessColor = Color.RED;
+			}
+			wordDisplay.setForeground(guessColor);
 		}
-		wordDisplay.setForeground(guessColor);
 	}
 
 	public void setDifficulty(Difficulty diff) {
 		this.wordSpeed = diff.wordSpeed;
 		this.cannonFireRate = diff.cannonFireRate;
 		this.msToSpeedUp = diff.msToSpeedUp;
+		this.verifyGuess = diff.verifyGuess;
 	}
 
 	public Context getContext() {
