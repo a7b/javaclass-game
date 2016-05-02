@@ -37,7 +37,7 @@ public class GameOver extends JPanel implements ActionListener {
 
 		lMsg = new JLabel();
 		bRestart = new JButton("Restart");
-		bMenu = new JButton("Go to the Main Menu");
+		bMenu = new JButton("Main Menu");
 		bQuit = new JButton("Quit");
 		
 		// generate text for lMsg
