@@ -69,43 +69,44 @@ public class GameOver extends JPanel implements ActionListener {
 		add(bMenu);
 		add(Box.createVerticalStrut(20));
 		add(bQuit);
+
+		// create new game
+		Container contentPane = ctx.getWindow().frame.getContentPane();
+		CardLayout layout = ctx.getWindow().layout;
+		// dispose of the old game
+		Game oldGame = ctx.getGame();
+		// first remove the component from the frame
+		contentPane.remove(oldGame);
+		// then the layout
+		layout.removeLayoutComponent(oldGame);
+		// remove it as a keylistener
+		ctx.getWindow().frame.removeKeyListener(oldGame);
+		// create a new game
+		Game newGame = null;
+		try {
+			newGame = new Game();
+		} catch (IOException ex) {
+			// quit if it doesn't work
+			ex.printStackTrace();
+			System.exit(1);
+		}
+		// change the game in the context to the new one
+		newGame.setContext(ctx);
+		ctx.setGame(newGame);
+		// add the new game to the contentPane
+		contentPane.add(newGame);
+		// add the new game to the layout under the name
+		layout.addLayoutComponent(newGame, "game");
+		// add it as a keylistener
+		ctx.getWindow().frame.addKeyListener(newGame);
+		// finally try to get rid of the old game
+		Runtime.getRuntime().gc();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == bRestart) {
-			Container contentPane = ctx.getWindow().frame.getContentPane();
-			CardLayout layout = ctx.getWindow().layout;
-			// dispose of the old game
-			Game oldGame = ctx.getGame();
-			// first remove the component from the frame
-			contentPane.remove(oldGame);
-			// then the layout
-			layout.removeLayoutComponent(oldGame);
-			// remove it as a keylistener
-			ctx.getWindow().frame.removeKeyListener(oldGame);
-			// create a new game
-			Game newGame = null;
-			try {
-				newGame = new Game();
-			} catch (IOException ex) {
-				// quit if it doesn't work
-				ex.printStackTrace();
-				System.exit(1);
-			}
-			// change the game in the context to the new one
-			newGame.setContext(ctx);
-			ctx.setGame(newGame);
-			// add the new game to the contentPane
-			contentPane.add(newGame);
-			// add the new game to the layout under the name
-			layout.addLayoutComponent(newGame, "game");
-			// add it as a keylistener
-			ctx.getWindow().frame.addKeyListener(newGame);
-			// finally, show the game
 			ctx.getWindow().show("game");
-			// get rid of the old game
-			Runtime.getRuntime().gc();
 		} else if (e.getSource() == bMenu) {
 			ctx.getWindow().show("main-menu");
 		} else if (e.getSource() == bQuit) {

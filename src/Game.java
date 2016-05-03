@@ -123,7 +123,8 @@ public class Game extends JPanel implements KeyListener {
 
 		JPanel wordPanel = new JPanel();
 		wordPanel.setLayout(new BoxLayout(wordPanel, BoxLayout.Y_AXIS));
-		wordPanel.setPreferredSize(new Dimension(ctx.getWindow().size.width,
+		wordPanel.setPreferredSize(new Dimension((int) ctx.getWindow().size
+				.getWidth(),
 				wordDisplayHeight));
 		wordPanel.add(wordDisplay);
 		wordPanel.setBackground(Color.WHITE);
@@ -255,7 +256,7 @@ public class Game extends JPanel implements KeyListener {
 			}
 		}
 		// clamp
-		wordLoc[0] = (int) (Math.random() * (ctx.getWindow().size.width - wordMetrics
+		wordLoc[0] = (int) (Math.random() * (ctx.getWindow().size.getWidth() - wordMetrics
 				.stringWidth(word)));
 		wordLoc[1] = 0;
 		setGuess("");
