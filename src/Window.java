@@ -6,9 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
 
@@ -69,19 +67,6 @@ public class Window {
 		layout.addLayoutComponent(ctx.getGameOver(), "game-over");
 
 		layout.show(contentPane, "main-menu");
-
-		menu = new JMenuBar();
-		JMenu menuGame = new JMenu("Game");
-		JMenuItem menuExit = new JMenuItem("Exit");
-		menuExit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-
-		menuGame.add(menuExit);
-		menu.add(menuGame);
 
 		frame.pack();
 		frame.setLocationRelativeTo(null);
