@@ -12,6 +12,8 @@ import javax.swing.Timer;
 
 public class Window {
 
+	public final Dimension size = new Dimension(1280, 720);
+
 	protected Context ctx;
 	protected Timer timer;
 	protected JFrame frame;
@@ -25,7 +27,7 @@ public class Window {
 
 	public Window() {
 		frame = new JFrame("Word game");
-		frame.getContentPane().setPreferredSize(new Dimension(1280, 720));
+		frame.getContentPane().setPreferredSize(size);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		layout = new CardLayout();
