@@ -69,7 +69,10 @@ public class GameOver extends JPanel implements ActionListener {
 		add(bMenu);
 		add(Box.createVerticalStrut(20));
 		add(bQuit);
+	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		// create new game
 		Container contentPane = ctx.getWindow().frame.getContentPane();
 		CardLayout layout = ctx.getWindow().layout;
@@ -100,11 +103,8 @@ public class GameOver extends JPanel implements ActionListener {
 		// add it as a keylistener
 		ctx.getWindow().frame.addKeyListener(newGame);
 		// finally try to get rid of the old game
-		Runtime.getRuntime().gc();
-	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+		Runtime.getRuntime().gc();
 		if (e.getSource() == bRestart) {
 			ctx.getWindow().show("game");
 		} else if (e.getSource() == bMenu) {
