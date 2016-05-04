@@ -123,7 +123,7 @@ public class Game extends JPanel implements KeyListener {
 
 		JPanel wordPanel = new JPanel();
 		wordPanel.setLayout(new BoxLayout(wordPanel, BoxLayout.Y_AXIS));
-		wordPanel.setPreferredSize(new Dimension((int) ctx.getWindow().size
+		wordPanel.setPreferredSize(new Dimension((int) Window.SIZE
 				.getWidth(),
 				wordDisplayHeight));
 		wordPanel.add(wordDisplay);
@@ -197,7 +197,7 @@ public class Game extends JPanel implements KeyListener {
 					// word length over 10 (.56 below average length)
 					// base score
 					// more precision when converted to int
-					score += ((1.0 - (wordLoc[1] / ctx.getWindow().size.height))
+					score += ((1.0 - (wordLoc[1] / Window.SIZE.height))
 							* 0.2 + (word.length() / 10.0) * 0.6 + (0.2) * 0.2) * (100);
 				}
 				//wordBounds.intersects(laser.center[0], laser.center[1], 100, 10)
@@ -227,7 +227,7 @@ public class Game extends JPanel implements KeyListener {
 		// move the word
 
 		wordLoc[1] += wordAccelSpeed;
-		if (wordLoc[1] > ctx.getWindow().size.height + wordMetrics.getHeight()) {
+		if (wordLoc[1] > Window.SIZE.height + wordMetrics.getHeight()) {
 			newWord();
 			lives--;
 		}
@@ -256,7 +256,7 @@ public class Game extends JPanel implements KeyListener {
 			}
 		}
 		// clamp
-		wordLoc[0] = (int) (Math.random() * (ctx.getWindow().size.getWidth() - wordMetrics
+		wordLoc[0] = (int) (Math.random() * (Window.SIZE.getWidth() - wordMetrics
 				.stringWidth(word)));
 		wordLoc[1] = 0;
 		setGuess("");
