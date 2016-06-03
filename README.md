@@ -4,6 +4,8 @@
 - Tej Nair
 - Tom Zhang
 
+> Please read the contributor graph on GitHub.
+
 ## Overview
 Our game is a single-player educational game. It helps kids improve their typing skills while keeping the game interesting and involving. It could be used instead of programs like Type To Learn, Typing Tutor, and other common programs used in elementary school to teach kids how to type. Features could be added to teach the user math, vocabulary, or trivia facts. The game’s name has not been decided yet.
 
