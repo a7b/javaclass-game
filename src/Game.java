@@ -313,31 +313,32 @@ public class Game extends JPanel implements KeyListener {
 			return;
 		}
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_LEFT:
-			cmdLeft = true;
-			direction = Direction.LEFT;
-			break;
-		case KeyEvent.VK_RIGHT:
-			cmdRight = true;
-			direction = Direction.RIGHT;
-			break;
-		case KeyEvent.VK_ENTER:
-			cmdShoot = true;
-			break;
-		// retry
-		case KeyEvent.VK_BACK_SPACE:
-			if (e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK) {
+			case KeyEvent.VK_LEFT:
+				cmdLeft = true;
+				direction = Direction.LEFT;
+				break;
+			case KeyEvent.VK_RIGHT:
+				cmdRight = true;
+				direction = Direction.RIGHT;
+				break;
+			case KeyEvent.VK_ENTER:
+				cmdShoot = true;
+				break;
+			// retry
+			case KeyEvent.VK_BACK_SPACE:
+				if (e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK) {
+					setGuess("");
+				} 
+				else if (guess.length() > 0) {
+					setGuess(guess.substring(0, guess.length() - 1));
+				}
+				break;
+			// retry
+			case KeyEvent.VK_TAB:
 				setGuess("");
-			} else if (guess.length() > 0) {
-				setGuess(guess.substring(0, guess.length() - 1));
-			}
-			break;
-		// retry
-		case KeyEvent.VK_TAB:
-			setGuess("");
-			break;
-		case KeyEvent.VK_PERIOD:
-			break;
+				break;
+			case KeyEvent.VK_PERIOD:
+				break;
 		}
 	}
 
@@ -347,17 +348,17 @@ public class Game extends JPanel implements KeyListener {
 			return;
 		}
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_LEFT:
-			cmdLeft = false;
-			direction = cmdRight ? Direction.RIGHT : Direction.NEUTRAL;
-			break;
-		case KeyEvent.VK_RIGHT:
-			cmdRight = false;
-			direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
-			break;
-		case KeyEvent.VK_ENTER:
-			cmdShoot = false;
-			break;
+			case KeyEvent.VK_LEFT:
+				cmdLeft = false;
+				direction = cmdRight ? Direction.RIGHT : Direction.NEUTRAL;
+				break;
+			case KeyEvent.VK_RIGHT:
+				cmdRight = false;
+				direction = cmdLeft ? Direction.LEFT : Direction.NEUTRAL;
+				break;
+			case KeyEvent.VK_ENTER:
+				cmdShoot = false;
+				break;
 		}
 	}
 
